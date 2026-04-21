@@ -1,0 +1,59 @@
+name: 🚀 Production Full-Stack Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 🔨 Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: 🔨 Build Backend
+        run: |
+          cd backend
+          npm install
+          npm run build
+
+      - name: 📂 Deploy Frontend (To public_html)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/build/
+          server-dir: ./public_html/
+          # This handles your "delete old files" requirement:
+          dangerous-clean-slate: false 
+
+      - name: 📂 Deploy Backend Dist (To public_html/backend/dist)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./backend/dist/
+          server-dir: ./public_html/backend/dist/
+
+      - name: 📂 Deploy Backend Src (To public_html/backend/src)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./backend/src/
+          server-dir: ./public_html/backend/src/
