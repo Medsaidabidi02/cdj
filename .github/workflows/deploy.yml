@@ -21,9 +21,8 @@ jobs:
         run: |
           cd frontend
           npm install
-          CI=false npm run build
           npm run build
-
+          CI=false npm run build
       - name: 🔨 Build Backend
         run: |
           cd backend
