@@ -1,0 +1,3 @@
+# This directory stores private inbox PDFs
+# Files here are NOT publicly accessible
+# They are served through protected streaming endpoints only

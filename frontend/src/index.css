@@ -1,0 +1,107 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply font-sans text-slate-900 bg-slate-50 antialiased;
+    line-height: 1.6;
+  }
+
+  .arabic-text, [lang="ar"] {
+    font-family: 'Cairo', 'Inter', sans-serif;
+    direction: rtl;
+    text-align: right;
+  }
+}
+
+@layer components {
+  /* Unified Typography */
+  .page-title {
+    @apply font-sans text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight tracking-tight;
+  }
+
+  .page-subtitle {
+    @apply font-sans text-lg md:text-xl text-slate-600 font-normal leading-relaxed;
+  }
+
+  .section-title {
+    @apply font-sans text-2xl md:text-3xl font-bold text-slate-900 leading-snug tracking-tight;
+  }
+
+  .card-title {
+    @apply font-sans text-xl font-semibold text-slate-900 leading-normal;
+  }
+  
+  /* Modern Interactive Elements */
+  .btn-primary {
+    @apply flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-6 rounded-xl shadow-soft hover:shadow-elegant transition-all duration-300 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-900 font-medium py-3 px-6 rounded-xl transition-all duration-300 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply flex items-center justify-center border-2 border-teal-600 text-teal-600 hover:bg-teal-50 font-medium py-2.5 px-6 rounded-xl transition-all duration-300 active:scale-95;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-slate-200 text-slate-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all duration-200 placeholder:text-slate-400;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-glass hover:shadow-elegant transition-all duration-300 overflow-hidden;
+  }
+
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  /* Notification Animations */
+  @keyframes toast-enter {
+    from { transform: scale(0.95) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  @keyframes toast-leave {
+    from { transform: scale(1) translateY(0); opacity: 1; }
+    to { transform: scale(0.95) translateY(10px); opacity: 0; }
+  }
+  @keyframes toast-progress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+  }
+
+  .animate-enter {
+    animation: toast-enter 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+  }
+  .animate-leave {
+    animation: toast-leave 0.2s ease-in forwards;
+  }
+  .animate-toast-progress {
+    animation: toast-progress 5s linear forwards;
+  }
+}
