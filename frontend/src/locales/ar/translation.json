@@ -1,0 +1,243 @@
+{
+  "site_title": "Clinique des Juristes",
+  "logo_alt": "شعار Clinique des Juristes",
+  "language_switcher": "اللغة",
+  "nav": {
+    "home": "الرئيسية",
+    "courses": "الدورات",
+    "blog": "المقالات",
+    "contact": "اتصل بنا",
+    "dashboard": "لوحة التحكم",
+    "profile": "ملفي الشخصي",
+    "toggle_menu": "تبديل القائمة",
+    "main": "التنقل الرئيسي"
+  },
+  "header": {
+    "admin": "الإدارة",
+    "my_learning": "تعلّمي",
+    "inbox": "صندوق الوارد"
+  },
+  "auth": {
+    "logout": "تسجيل الخروج",
+    "logging_out": "جاري تسجيل الخروج...",
+    "loading": "جاري التحميل...",
+    "checking_auth": "التحقق من المصادقة...",
+    "checking_admin": "التحقق من صلاحيات الإدارة...",
+    "login": {
+      "welcome_line1": "مرحباً",
+      "welcome_line2": "من جديد",
+      "subtitle": "قم بتسجيل الدخول للوصول إلى دوراتك ومواردنا القانونية",
+      "email_label": "البريد الإلكتروني",
+      "email_placeholder": "بريدك@مثال.com",
+      "password_label": "كلمة المرور",
+      "password_placeholder": "••••••••",
+      "submit": "تسجيل الدخول",
+      "connecting": "جاري تسجيل الدخول...",
+      "new_here": "جديد هنا؟",
+      "no_account": "لا تملك حساباً؟",
+      "sign_up": "سجل الآن",
+      "or": "أو",
+      "contact_us": "اتصل بنا",
+      "error_default": "فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد."
+    },
+    "signup": {
+      "button": "سجل الآن",
+      "badge_text": "انضم إلى مجتمعنا",
+      "create_account_line1": "أنشئ",
+      "create_account_line2": "حسابك",
+      "subtitle": "انضم إلينا للوصول إلى دورات التعليم القانوني المتميزة",
+      "name_label": "الاسم الكامل",
+      "name_placeholder": "أحمد محمد",
+      "email_label": "البريد الإلكتروني",
+      "email_placeholder": "بريدك@مثال.com",
+      "password_label": "كلمة المرور",
+      "password_placeholder": "••••••••",
+      "password_hint": "6 أحرف على الأقل",
+      "confirm_password_label": "تأكيد كلمة المرور",
+      "confirm_password_placeholder": "••••••••",
+      "submit": "إنشاء حساب",
+      "creating": "جاري إنشاء الحساب...",
+      "already_member": "عضو بالفعل؟",
+      "have_account": "هل لديك حساب بالفعل؟",
+      "sign_in": "تسجيل الدخول",
+      "success_title": "تم التسجيل بنجاح!",
+      "success_message": "تم إنشاء حسابك. يرجى انتظار موافقة المسؤول قبل تسجيل الدخول.",
+      "redirecting": "جاري التوجيه إلى صفحة تسجيل الدخول...",
+      "error_default": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
+      "error_name_required": "الاسم مطلوب",
+      "error_name_too_short": "يجب أن يحتوي الاسم على حرفين على الأقل",
+      "error_email_required": "البريد الإلكتروني مطلوب",
+      "error_email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+      "error_password_required": "كلمة المرور مطلوبة",
+      "error_password_too_short": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
+      "error_confirm_password_required": "يرجى تأكيد كلمة المرور",
+      "error_passwords_dont_match": "كلمات المرور غير متطابقة"
+    }
+  },
+  "user": {
+    "administration": "الإدارة",
+    "logout": "تسجيل الخروج",
+    "default_name": "المستخدم",
+    "access_denied": "تم رفض الوصول",
+    "no_permission": "ليس لديك إذن للوصول إلى هذه الصفحة.",
+    "return_home": "العودة إلى الرئيسية"
+  },
+  "continue_watching": {
+    "title": "متابعة المشاهدة",
+    "resume": "استئناف",
+    "remaining": "متبقي",
+    "videos_count": "فيديو",
+    "minutes_ago": "منذ {{count}} دقيقة",
+    "hours_ago": "منذ {{count}} ساعة",
+    "days_ago": "منذ {{count}} يوم"
+  },
+  "my_learning": {
+    "title": "تعلّمي",
+    "page_title": "تعلّمي",
+    "subtitle": "تابع رحلتك التعليمية",
+    "no_courses": "لم تسجل في أي دورات بعد.",
+    "login_required": "يرجى تسجيل الدخول للوصول إلى لوحة التحكم الخاصة بك",
+    "browse_courses": "تصفح الدورات"
+  },
+  "hero": {
+    "section_label": "الرئيسي",
+    "badge_icon": "⚖️",
+    "badge_text": "التعليم القانوني المتميز",
+    "title_part1": "التعليم",
+    "title_highlight": "القانوني",
+    "title_part3": "الحديث،",
+    "title_accent": "في متناول اليد",
+    "title_aria": "التعليم القانوني الحديث في متناول اليد",
+    "description": "Clinique des Juristes - كل التخصصات القانونية. دورات متخصصة وحديثة لمساعدتك على النجاح.",
+    "social_proof_trust": "+{{count}} قانونياً وثقوا بنا.",
+    "image_alt": "خريج"
+  },
+  "buttons": {
+    "cta_more": "المزيد",
+    "contact_us": "اتصل بنا"
+  },
+  "why": {
+    "title": "لماذا تختار Clinique des Juristes"
+  },
+  "features": {
+    "title1": "محتوى منظم وواضح",
+    "desc1": "وحدات تعليمية مرتبة من قبل خبراء القانون",
+    "title2": "تعلّم حسب وتيرتك",
+    "desc2": "دورات متاحة 24/7 مع وصول غير محدود",
+    "title3": "الاستعداد للامتحانات والنجاح",
+    "desc3": "تحضير مكثف لامتحانات القبول والعروض الشفهية"
+  },
+  "courses": {
+    "title": "دوراتنا",
+    "subtitle": "حسّن مهاراتك من خلال الدورات المحدثة التي يقدمها مدرسونا.",
+    "page_title": "دوراتنا",
+    "loading": "تحميل الدورات...",
+    "error_title": "خطأ في التحميل",
+    "choose_count": "اختر من بين {{count}} دورة لتطوير مسارك المهني",
+    "category_all": "جميع الدورات",
+    "no_courses_title": "لا توجد دورات متاحة",
+    "no_courses_message_all": "دوراتنا قادمة قريبًا. الرجاء العودة لاحقًا.",
+    "no_courses_message_category": "لا توجد دورات في فئة \"{{category}}\".",
+    "login_required_message": "الرجاء تسجيل الدخول لمشاهدة الفيديو الكامل",
+    "alert_not_enrolled": "أنت غير مسجل في هذه الدورة. اتصل بالمسؤول لطلب الوصول.",
+    "instructor_placeholder": "المدرب",
+    "total_hours": "{{count}} ساعة إجمالاً",
+    "word_videos": "مقاطع فيديو",
+    "word_videos_short": "فيديو",
+    "all_levels": "جميع المستويات",
+    "enrolled": "مسجل ✓",
+    "login_required": "مطلوب تسجيل الدخول 🔒",
+    "view_content": "عرض المحتوى",
+    "hide": "إخفاء",
+    "view_course": "عرض الدورة",
+    "badge_new": "جديد",
+    "untitled": "دورة",
+    "description_placeholder": "سيتم توفير الوصف قريبًا.",
+    "view_all": "عرض الكل",
+    "empty_title": "دوراتنا قادمة قريباً!"
+  },
+  "articles": {
+    "title": "آخر المقالات",
+    "subtitle": "اكتشف نصائح الخبراء والأخبار القانونية وموارد التعلم.",
+    "empty_title": "مقالاتنا قادمة قريباً!",
+    "untitled": "مقال",
+    "excerpt_placeholder": "مقتطف المقال سيظهر هنا.",
+    "view_all": "عرض الكل"
+  },
+  "blog": {
+    "hero_section": "المدونة",
+    "hero_badge": "الأخبار والنصائح القانونية",
+    "hero_title_prefix": "آخر",
+    "hero_title_highlight": "المقالات",
+    "hero_description": "اكتشف نصائح الخبراء والأخبار القانونية وموارد التعلم للبقاء على اطلاع بأحدث المستجدات في القانون.",
+    "read_more": "اقرأ المزيد",
+    "unavailable": "المقال غير متاح",
+    "empty_text": "مقالاتنا قادمة قريبًا! تحقق لاحقًا للاطلاع على المحتوى القانوني.",
+    "error_loading": "فشل تحميل المقالات. الرجاء المحاولة مرة أخرى لاحقًا.",
+    "detail_invalid_url": "رابط المقال غير صالح",
+    "error_unauthorized": "غير مصرح (401) — واجهة مقالات المدونة تتطلب مصادقة. تحقق من التوكن/الجلسة.",
+    "detail_not_found": "المقال غير موجود أو غير متاح (404 / صلاحيات).",
+    "detail_load_failed": "فشل تحميل المقال: {{msg}}",
+    "detail_unavailable_title": "المقال غير متاح",
+    "detail_unavailable_message": "المقال غير متوفر",
+    "back_to_list": "العودة إلى المقالات",
+    "author_alt": "المؤلف",
+    "author_default": "Clinique des Juristes"
+  },
+  "contact": {
+    "hero_title": "اتصل بنا",
+    "hero_description": "فريقنا هنا لدعم مسارك في التعلم القانوني. لا تتردد في طرح أي سؤال.",
+    "info_title": "معلومات التواصل",
+    "method_email": {
+      "title": "البريد الإلكتروني",
+      "desc": "أرسل لنا رسالة"
+    },
+    "method_phone": {
+      "title": "الهاتف",
+      "desc": "اتصل بنا مباشرة"
+    },
+    "method_address": {
+      "title": "العنوان",
+      "desc": "قم بزيارة مكاتبنا",
+      "detail": "5 نهج 20 مارس، تونس 1006، تونس"
+    },
+    "method_hours": {
+      "title": "ساعات العمل",
+      "desc": "ساعات توفرنا",
+      "detail": "الاثنين-الجمعة: 9ص-6م<br/>السبت: 9ص-1م"
+    },
+    "form_heading": "نموذج الاتصال",
+    "form": {
+      "name_label": "الاسم الكامل",
+      "name_placeholder": "اسمك الكامل",
+      "email_label": "البريد الإلكتروني",
+      "email_placeholder": "بريدك@مثال.com",
+      "subject_label": "الموضوع",
+      "subject_placeholder": "اختر الموضوع",
+      "subjects": {
+        "general": "سؤال عام",
+        "tech": "دعم فني",
+        "course": "اقتراح دورة",
+        "partnership": "فرصة شراكة",
+        "other": "أخرى"
+      },
+      "message_label": "رسالتك",
+      "message_placeholder": "صف طلبك بالتفصيل...",
+      "sending": "جار الإرسال...",
+      "submit": "إرسال الرسالة"
+    },
+    "success_title": "تم إرسال الرسالة!",
+    "success_message": "شكراً لرسالتك. سيرد عليك فريقنا في أقرب وقت ممكن.",
+    "success_send_another": "إرسال رسالة أخرى",
+    "error_generic": "فشل إرسال الرسالة. الرجاء المحاولة مرة أخرى لاحقاً."
+  },
+  "footer": {
+    "description": "Clinique des Juristes - التميز القانوني الحديث في متناول يدك. اكتشف دوراتنا المتخصصة.",
+    "quick_links": "روابط سريعة",
+    "contact": "اتصل بنا",
+    "all_rights_reserved": "جميع الحقوق محفوظة."
+  },
+  "homepage": {
+    "error_loading": "فشل تحميل المحتوى. الرجاء المحاولة لاحقًا."
+  }
+}

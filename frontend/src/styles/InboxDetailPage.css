@@ -1,0 +1,222 @@
+/* Inbox Detail Page Styles */
+.inbox-detail-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.inbox-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 20px 40px;
+}
+
+.inbox-detail-nav {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.back-button:hover {
+  background: #f8fafc;
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.back-arrow {
+  font-size: 1.1rem;
+}
+
+/* Message Card */
+.inbox-detail-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.inbox-detail-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.inbox-detail-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 16px 0;
+  line-height: 1.3;
+}
+
+.inbox-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.inbox-detail-sender {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.inbox-detail-sender strong {
+  color: #1e293b;
+}
+
+.inbox-detail-date {
+  color: #94a3b8;
+}
+
+/* Content */
+.inbox-detail-content {
+  padding: 32px;
+}
+
+.inbox-detail-description {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #334155;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.inbox-detail-no-content {
+  font-size: 1rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Actions */
+.inbox-detail-actions {
+  padding: 24px 32px;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+}
+
+.view-pdf-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+}
+
+.view-pdf-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+}
+
+.pdf-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Error State */
+.inbox-detail-error {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.inbox-detail-error .error-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  background: #fef2f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.inbox-detail-error h2 {
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.inbox-detail-error p {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.inbox-detail-error .back-link {
+  display: inline-flex;
+  padding: 12px 24px;
+  background: #22c55e;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.inbox-detail-error .back-link:hover {
+  background: #16a34a;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .inbox-detail-container {
+    padding: 90px 16px 32px;
+  }
+
+  .inbox-detail-header {
+    padding: 20px 20px;
+  }
+
+  .inbox-detail-title {
+    font-size: 1.35rem;
+  }
+
+  .inbox-detail-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .inbox-detail-content {
+    padding: 24px 20px;
+  }
+
+  .inbox-detail-description {
+    font-size: 1rem;
+  }
+
+  .inbox-detail-actions {
+    padding: 20px;
+  }
+
+  .view-pdf-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

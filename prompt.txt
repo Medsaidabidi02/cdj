@@ -1,0 +1,320 @@
+# Live Streaming Architecture & Implementation Guide
+
+This document provides the complete architecture and step-by-step implementation guide to build your web-based live streaming feature. 
+
+Because your main codebase is actively serving production traffic through a Cloudflare tunnel, **you should build this inside a completely separate, standalone folder** (e.g., `live-stream-prototype`) to avoid breaking your live site.
+
+---
+
+## 1. Core Architecture
+
+To support 30 to 250 concurrent students where the teacher broadcasts video/audio and students can open their mics, you must use a **Selective Forwarding Unit (SFU)**. 
+
+We will use **Mediasoup**, an open-source C++ SFU that integrates directly into Node.js. 
+
+### The Network Flow
+1. **The Teacher** (Producer) uploads **one** video and audio stream to the Mediasoup Router on your backend.
+2. **The Students** (Consumers) download the teacher's video and audio stream from the Mediasoup Router.
+3. If a student unmutes to ask a question, they upload their audio to the Router, and the Router forwards it to everyone else.
+4. **Recording**: The Teacher's browser records the final mixed audio/video using `MediaRecorder` and sends it to the backend in chunks to be automatically uploaded to Hetzner.
+
+---
+
+## 2. Setting Up the Isolated Test Environment
+
+Create a new folder on your computer called `live-test-project` with two subfolders: `backend` and `frontend`.
+
+### A. Test Backend Setup
+Open a terminal in the `backend` folder and run:
+```bash
+npm init -y
+npm install express socket.io mediasoup cors
+```
+*(Note: `mediasoup` will require Python and Visual Studio Build Tools to compile successfully on Windows).*
+
+**`server.js` Architecture:**
+```javascript
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const mediasoup = require('mediasoup');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
+
+let worker;
+let router;
+
+// 1. Initialize Mediasoup Worker
+async function startMediasoup() {
+  worker = await mediasoup.createWorker();
+  router = await worker.createRouter({
+    mediaCodecs: [
+      { kind: 'audio', mimeType: 'audio/opus', clockRate: 48000, channels: 2 },
+      { kind: 'video', mimeType: 'video/VP8', clockRate: 90000, parameters: {} }
+    ]
+  });
+  console.log('Mediasoup Router initialized');
+}
+
+startMediasoup();
+
+// 2. Socket.io Signaling
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  // Step 1: Send RTP Capabilities to the client so they know what codecs are supported
+  socket.on('getRouterRtpCapabilities', (callback) => {
+    callback(router.rtpCapabilities);
+  });
+
+  // Step 2: Create a WebRTC Transport (Upload or Download pipeline)
+  socket.on('createWebRtcTransport', async (callback) => {
+    const transport = await router.createWebRtcTransport({
+      listenIps: [{ ip: '127.0.0.1', announcedIp: null }], // Use your machine's IP if testing across network
+      enableUdp: true,
+      enableTcp: true,
+      preferUdp: true,
+    });
+    
+    // Store transport in a map tied to the socket.id here...
+
+    callback({
+      id: transport.id,
+      iceParameters: transport.iceParameters,
+      iceCandidates: transport.iceCandidates,
+      dtlsParameters: transport.dtlsParameters,
+    });
+  });
+
+  // Step 3: Handle Producer (Teacher sending video)
+  socket.on('produce', async ({ transportId, kind, rtpParameters }, callback) => {
+    // Find the transport, call transport.produce()
+    // Broadcast to other sockets that a new producer exists
+    callback({ id: producer.id });
+  });
+
+  // Step 4: Handle Consumer (Student receiving video)
+  socket.on('consume', async ({ rtpCapabilities, producerId }, callback) => {
+    // Find the student's receive transport, call transport.consume()
+    callback({ id: consumer.id, producerId, kind: consumer.kind, rtpParameters: consumer.rtpParameters });
+  });
+});
+
+server.listen(4000, () => console.log('Test SFU running on port 4000'));
+```
+
+### B. Test Frontend Setup
+Open a terminal in the `frontend` folder and run:
+```bash
+npx create-react-app . --template typescript
+npm install socket.io-client mediasoup-client
+```
+
+**`App.tsx` Architecture:**
+```tsx
+import React, { useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
+import * as mediasoupClient from 'mediasoup-client';
+
+const socket = io('http://localhost:4000');
+
+export default function App() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [device, setDevice] = useState<mediasoupClient.Device | null>(null);
+
+  useEffect(() => {
+    socket.on('connect', async () => {
+      // 1. Get Router Capabilities
+      socket.emit('getRouterRtpCapabilities', async (routerRtpCapabilities) => {
+        // 2. Initialize Mediasoup Device
+        const newDevice = new mediasoupClient.Device();
+        await newDevice.load({ routerRtpCapabilities });
+        setDevice(newDevice);
+      });
+    });
+  }, []);
+
+  const startBroadcasting = async () => {
+    if (!device) return;
+
+    // 1. Get Camera/Mic
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    if (videoRef.current) videoRef.current.srcObject = stream;
+
+    // 2. Ask backend to create a Send Transport
+    socket.emit('createWebRtcTransport', async (params) => {
+      const sendTransport = device.createSendTransport(params);
+
+      // 3. Connect Transport
+      sendTransport.on('connect', ({ dtlsParameters }, callback, errback) => {
+        socket.emit('connectTransport', { dtlsParameters }, callback);
+      });
+
+      // 4. Produce (Send Media)
+      sendTransport.on('produce', async ({ kind, rtpParameters }, callback, errback) => {
+        socket.emit('produce', { kind, rtpParameters }, ({ id }) => callback({ id }));
+      });
+
+      // 5. Start sending the video and audio tracks
+      await sendTransport.produce({ track: stream.getVideoTracks()[0] });
+      await sendTransport.produce({ track: stream.getAudioTracks()[0] });
+    });
+  };
+
+  const startViewing = async () => {
+    // Similar flow, but you ask backend to create a Receive Transport
+    // Then you call receiveTransport.consume() using the teacher's producerId
+    // And attach the resulting track to your videoRef
+  };
+
+  return (
+    <div>
+      <h1>Live Stream Prototype</h1>
+      <button onClick={startBroadcasting}>Start Broadcasting (Teacher)</button>
+      <button onClick={startViewing}>Watch Stream (Student)</button>
+      <video ref={videoRef} autoPlay playsInline muted />
+    </div>
+  );
+}
+```
+
+---
+
+## 3. The Auto-Recording Architecture (The "VOD" Solution)
+
+Instead of the server trying to record the stream (which requires heavy CPU and complex FFmpeg RTP pulling), we will use **Browser-Side Recording** on the Teacher's machine.
+
+1. Once the teacher starts the broadcast and the `MediaStream` is active, initialize a `MediaRecorder` in the React frontend. We will attempt to record directly in `MP4` format for the local backup:
+
+```javascript
+const recordedChunks = [];
+
+// Try to use MP4 (H264) if the browser supports it, otherwise fallback to WebM
+const mimeType = MediaRecorder.isTypeSupported('video/mp4;codecs=avc1') 
+  ? 'video/mp4;codecs=avc1' 
+  : 'video/webm;codecs=vp8,opus';
+
+const mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+// Every 5 seconds, send the recording chunk to the server AND save it locally
+mediaRecorder.ondataavailable = (event) => {
+  if (event.data.size > 0) {
+    // 1. Send chunk to backend for auto-upload
+    socket.emit('recording-chunk', event.data);
+    
+    // 2. Keep a copy in the browser's memory for the local backup
+    recordedChunks.push(event.data);
+  }
+};
+
+// When the teacher clicks "End Live"
+mediaRecorder.onstop = () => {
+  // Automatically trigger a file download on the Teacher's computer
+  const isMp4 = mimeType.includes('mp4');
+  const extension = isMp4 ? 'mp4' : 'webm';
+  const blob = new Blob(recordedChunks, { type: isMp4 ? 'video/mp4' : 'video/webm' });
+  
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = `Live-Backup-${new Date().toISOString()}.${extension}`;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+};
+
+mediaRecorder.start(5000); // 5000ms chunks
+```
+
+2. On the **Backend**, listen for these chunks and write them to a temporary file:
+```javascript
+const fs = require('fs');
+// We save it temporarily exactly as it arrives
+const tempFilePath = './temp-recordings/session_123.tmp';
+const writeStream = fs.createWriteStream(tempFilePath);
+
+socket.on('recording-chunk', (chunk) => {
+  writeStream.write(chunk);
+});
+
+socket.on('end-broadcast', () => {
+  writeStream.end();
+  
+  /* 
+    Trigger your EXACT EXISTING FFmpeg Workflow here!
+    FFmpeg will read the temporary file and convert it directly to HLS:
+    
+    ffmpeg -i ./temp-recordings/session_123.tmp -c:v libx264 -c:a aac -f hls index.m3u8
+    
+    Once the .m3u8 and .ts files are generated, upload them to Hetzner just like you 
+    do with your normal pre-recorded courses, then delete the temporary file!
+  */
+});
+```
+
+This perfectly satisfies your requirement to auto-record the live session and upload it to Hetzner without leaving the platform, all while keeping your server CPU usage extremely low.
+
+# Gemini Implementation Prompt: Web-Based Live Streaming
+
+**Instructions for you:** 
+Copy the entire text below and paste it as your first prompt into a new Gemini coding session once you have opened your *copied* test codebase in your editor.
+
+---
+
+### COPY EVERYTHING BELOW THIS LINE:
+
+**SYSTEM CONTEXT:**
+I have copied my production codebase (React frontend + Node.js/Express backend) into a new test directory to safely implement a new feature. **Do NOT use ports 3000 or 5001** because my production site is currently running on those ports. 
+
+**THE GOAL:**
+We are going to build a fully self-hosted, centralized live streaming feature replacing Zoom. The architecture must support 1 Teacher broadcasting video/audio to up to 250 students, where students can also unmute their microphones to ask questions. 
+
+**THE ARCHITECTURE:**
+Because of the 250-student scale, we cannot use peer-to-peer WebRTC (Mesh). We must use a **Selective Forwarding Unit (SFU)**. 
+1. **Backend SFU**: We will integrate the `mediasoup` Node.js package into our Express backend.
+2. **Frontend UI**: We will use `mediasoup-client` to connect the Teacher and Students to the router.
+3. **Automated VOD Recording**: The server should NOT run FFmpeg to record the live WebRTC stream. Instead, we will use **Browser-Side Recording**. The Teacher's browser will use the `MediaRecorder API` to record the mixed stream, and send the video in 5-second chunks via `Socket.io` to the backend. The backend will stitch these chunks together and run our existing FFmpeg segmentation/Hetzner upload flow.
+
+**STEP-BY-STEP EXECUTION PLAN:**
+Please execute this project sequentially. Wait for my confirmation after each step before moving to the next.
+
+### Step 1: Port Configuration
+- Change the frontend React app to run on port `3005` (update `package.json` scripts if necessary).
+- Change the backend Express app to run on port `5005`.
+- Update the API base URL in the frontend (`api.ts` or `.env`) to point to `http://localhost:5005`.
+
+### Step 2: Database Setup
+- Create a migration or SQL script to add:
+  - An `is_teacher` boolean to the `users` table.
+  - A new `live_sessions` table (`id`, `host_id`, `title`, `status`, `started_at`, `ended_at`).
+  - A new `live_session_subjects` table to link a session to multiple subjects.
+
+### Step 3: Backend Mediasoup Integration
+- Run `npm install mediasoup` in the backend.
+- Create a new service file: `src/services/mediasoupService.ts`.
+- Initialize a Mediasoup Worker and Router. 
+- Create Socket.io listeners in `server.ts` to handle:
+  - `getRouterRtpCapabilities`
+  - `createWebRtcTransport` (for both sending and receiving)
+  - `connectTransport`
+  - `produce` (for Teacher video/audio, and Student audio)
+  - `consume` (for routing producers to consumers)
+
+### Step 4: Frontend Implementation
+- Run `npm install mediasoup-client` in the frontend.
+- Create two new components: `TeacherLiveBroadcaster.tsx` and `StudentLiveViewer.tsx`.
+- **Teacher View**: Connect to Mediasoup, grab `getUserMedia()`, produce Video + Audio tracks.
+- **Student View**: Connect to Mediasoup, consume the Teacher's tracks. Add a "Speak" button that grabs their microphone and produces an Audio track.
+
+### Step 5: Browser-Side Recording & FFmpeg HLS Segmentation
+- In `TeacherLiveBroadcaster.tsx`, initialize a `MediaRecorder` on the active `MediaStream`.
+- Attempt to use `video/mp4;codecs=avc1` if supported by the browser, otherwise fallback to `video/webm`.
+- Set it to slice data every 5000ms. Emit a Socket.io event `recording-chunk` to the server AND push the chunk to a local array.
+- On `onstop`, use the local array to generate a Blob and trigger a local file download (`.mp4` or `.webm`) so the teacher has a bulletproof backup.
+- In the backend, listen for `recording-chunk` and append the data to a temporary file (e.g. `.tmp`).
+- On `end-stream`, trigger the existing FFmpeg workflow to convert that temporary file directly into HLS (`ffmpeg -i temp.tmp -c:v libx264 -c:a aac -f hls index.m3u8`), upload the `.m3u8` and `.ts` files to Hetzner, and delete the temp file.
+
+**Acknowledge this prompt by summarizing the architecture and confirming you are ready for Step 1.**
