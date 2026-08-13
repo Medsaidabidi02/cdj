@@ -92,7 +92,8 @@ app.use('/api', (req, res, next) => {
 if (process.env.NODE_ENV === 'production') {
   app.use(helmet({
     contentSecurityPolicy: false, // Disable CSP for now to avoid issues with React
-    crossOriginEmbedderPolicy: false
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
   }));
   
   // Rate limiting for production
