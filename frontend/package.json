@@ -40,7 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:prod": "cross-env REACT_APP_API_URL=https://api.cliniquedesjuristes.com react-scripts build",
+    "build:prod": "cross-env REACT_APP_API_URL=https://api.cliniquedesjuristes.tech react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
