@@ -8,7 +8,7 @@
 type JsonObject = { [key: string]: any };
 
 // FIXED: Read from environment variable so dev uses localhost:5005, prod uses real domain
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://api.cliniquedesjuristes.com';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://api.cliniquedesjuristes.tech';
 
 
 class ApiClient {

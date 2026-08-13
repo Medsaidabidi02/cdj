@@ -39,6 +39,8 @@ app.use(express.urlencoded({ extended: true, limit: '5gb' }));
 const allowedOrigins = [
   'https://cliniquedesjuristes.com',
   'https://www.cliniquedesjuristes.com',
+  'https://cliniquedesjuristes.tech',
+  'https://www.cliniquedesjuristes.tech',
   'http://localhost:3000', 
   'http://localhost:3001', 
   'http://localhost:3005',
