@@ -351,10 +351,8 @@ const startServer = async () => {
     }
   } catch (error) {
     console.error('❌ Failed to start server:', error);
-    if (require.main === module) {
-      process.exit(1);
-    }
-    throw error; // Re-throw for Passenger
+    console.log('Holding process open for 5 minutes so logs can be read in Coolify...');
+    setInterval(() => console.log('Waiting for log inspection...'), 10000);
   }
 };
 
