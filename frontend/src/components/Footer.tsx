@@ -95,12 +95,19 @@ const Footer: React.FC = () => {
           
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-          <p>© {currentYear} {t('site_title', 'Clinique des Juristes')}. {t('footer.all_rights_reserved', 'All rights reserved.')}</p>
-          <div className="flex items-center gap-6">
-            <a href="#privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
-            <a href="#terms" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+        {/* Bottom Bar - Legal Information */}
+        <div className="pt-8 border-t border-slate-800 flex flex-col items-center md:items-start gap-4 text-sm text-slate-500">
+          <div className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
+            <p>© {currentYear} {t('site_title', 'Clinique des Juristes')}. {t('footer.all_rights_reserved', 'All rights reserved.')}</p>
+            <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+              <Link to="/privacy" className="hover:text-slate-300 transition-colors">{t('footer.legal_privacy', 'Politique de Confidentialité')}</Link>
+              <Link to="/cgv" className="hover:text-slate-300 transition-colors">{t('footer.legal_terms', 'Conditions Générales (CGV/CGU)')}</Link>
+            </div>
+          </div>
+          
+          <div className="w-full text-center md:text-left text-xs text-slate-600 mt-2 border-t border-slate-800/50 pt-4">
+            <p><strong>Clinique des Juristes (SUARL)</strong> - 1029 Bab Souika Tunis</p>
+            <p>Matricule Fiscal / RNE : <strong>1848202A</strong></p>
           </div>
         </div>
       </div>

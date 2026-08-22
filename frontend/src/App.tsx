@@ -26,6 +26,8 @@ import InboxDetailPage from './pages/InboxDetailPage';
 import InboxViewerPage from './pages/InboxViewerPage';
 import ProfilePage from './pages/ProfilePage';
 import LiveSessionPage from './pages/LiveSessionPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 
 // Protected Route Component
@@ -110,6 +112,8 @@ function App() {
         <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/cgv" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/course/:id" element={<CoursePage />} />
         <Route path="/blog" element={<BlogPage />} />

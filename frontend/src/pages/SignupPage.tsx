@@ -242,6 +242,27 @@ const SignupPage: React.FC = () => {
                     </div>
                   </div>
 
+                  <div className="flex items-start mt-4 mb-4">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="cgv-consent"
+                        name="cgvConsent"
+                        type="checkbox"
+                        required
+                        className="w-4 h-4 text-teal-600 bg-white border-gray-300 rounded focus:ring-teal-500 focus:ring-2"
+                      />
+                    </div>
+                    <div className="ml-2 text-sm">
+                      <label htmlFor="cgv-consent" className="font-medium text-slate-700">
+                        {t('auth.signup.legal_consent_1')}
+                        <Link to="/cgv" target="_blank" className="text-teal-600 hover:underline">{t('auth.signup.legal_consent_2')}</Link>
+                        {t('auth.signup.legal_consent_3')}
+                        <Link to="/privacy" target="_blank" className="text-teal-600 hover:underline">{t('auth.signup.legal_consent_4')}</Link>
+                        {t('auth.signup.legal_consent_5')}
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="pt-2">
                     <button
                       type="submit"
