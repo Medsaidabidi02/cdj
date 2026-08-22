@@ -152,7 +152,7 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
     const { title, description, cover_image, category, is_active, thumbnail_path } = req.body;
     
     console.log('➕ POST /api/courses - Creating course');
-    console.log('👤 User:', (req as any).user?.name || (req as any).user?.email);
+    console.log('👤 User:', req.user?.name || req.user?.email);
     console.log('📝 Course data:', { title, description, category });
     
     // Validate required fields
@@ -222,7 +222,7 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
     const { title, description, cover_image, category, is_active, thumbnail_path } = req.body;
     
     console.log(`🔄 PUT /api/courses/${id} - Updating course`);
-    console.log('👤 User:', (req as any).user?.name || (req as any).user?.email);
+    console.log('👤 User:', req.user?.name || req.user?.email);
     console.log('📝 Update data:', { title, description, category, is_active });
     
     // Check if course exists first
@@ -299,7 +299,7 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     console.log(`🗑️ DELETE /api/courses/${id} - Real database deletion`);
-    console.log('👤 User:', (req as any).user?.name || (req as any).user?.email);
+    console.log('👤 User:', req.user?.name || req.user?.email);
     
     // Check if course exists and get its info
     const courseCheck = await database.query('SELECT id, title FROM courses WHERE id = ?', [id]);

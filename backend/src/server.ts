@@ -348,7 +348,6 @@ const startServer = async () => {
         console.log(`🌍 Environment: ${config.nodeEnv}`);
         console.log(`📡 API URL: ${config.apiUrl}`);
       });
-        });
     }
   } catch (error) {
     console.error('❌ Failed to start server:', error);
