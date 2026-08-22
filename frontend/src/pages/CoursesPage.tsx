@@ -380,14 +380,6 @@ const CoursesPage: React.FC = () => {
                     onMouseEnter={() => course.firstVideo && handleVideoHover(course.firstVideo, true)}
                     onMouseLeave={() => course.firstVideo && handleVideoHover(course.firstVideo, false)}
                     onClick={() => {
-                      if (!isAuthenticated) {
-                        navigate('/login', { state: { returnTo: `/course/${course.id}` } });
-                        return;
-                      }
-                      if (!isCourseEnrolled) {
-                        alert(t('courses.alert_not_enrolled', "You are not enrolled in this course. Contact admin to request access."));
-                        return;
-                      }
                       navigate(`/course/${course.id}`);
                     }}
                   >
@@ -461,14 +453,6 @@ const CoursesPage: React.FC = () => {
                             : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                         }`}
                         onClick={() => {
-                          if (!isAuthenticated) {
-                            navigate('/login', { state: { returnTo: `/course/${course.id}`, message: t('courses.login_required_message', 'Please log in to view this course') } });
-                            return;
-                          }
-                          if (!isCourseEnrolled) {
-                            alert(t('courses.alert_not_enrolled', "You are not enrolled in this course. Contact admin to request access."));
-                            return;
-                          }
                           navigate(`/course/${course.id}`);
                         }}
                       >

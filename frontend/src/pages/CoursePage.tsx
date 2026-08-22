@@ -389,8 +389,21 @@ const CoursePage: React.FC = () => {
             </div>
             
             <div className="p-8 sm:p-12 text-center">
-              <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">{course.description}</p>
+              <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto whitespace-pre-wrap">{course.description}</p>
               
+              <div className="bg-teal-50 border border-teal-100 rounded-xl p-6 mb-8 max-w-2xl mx-auto text-left">
+                <h3 className="font-bold text-teal-900 mb-2">{t('course.pricing_info', 'Informations de tarification')}</h3>
+                <p className="text-teal-800 font-medium text-lg">{t('course.price', 'Prix de la formation :')} {t('course.price_amount', '150 TND (TTC)')}</p>
+                <p className="text-teal-700 text-sm mt-2 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                  {t('course.no_extra_fees', 'Aucun frais supplémentaire lors du paiement en ligne.')}
+                </p>
+                <p className="text-teal-700 text-sm mt-1 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <span>{t('course.see_cgv', 'Consultez nos')} <a href="/cgv" className="underline font-bold hover:text-teal-900">CGV</a> {t('course.see_cgv_details', 'pour les détails des taxes et modalités de livraison.')}</span>
+                </p>
+              </div>
+
               <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 sm:p-8 max-w-lg mx-auto">
                 <div className="text-4xl mb-4">🔒</div>
                 {isAuthenticated ? (
