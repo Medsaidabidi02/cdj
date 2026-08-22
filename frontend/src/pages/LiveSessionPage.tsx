@@ -13,6 +13,7 @@ import { useAuth } from '../lib/AuthContext';
 import TeacherLiveBroadcaster from '../components/TeacherLiveBroadcaster';
 import StudentLiveViewer from '../components/StudentLiveViewer';
 import { API_CONFIG } from '../config';
+import { PlaySquare, Play, Check } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────
 
@@ -100,7 +101,7 @@ const LiveSessionPage: React.FC = () => {
     const map: Record<string, { label: string; color: string }> = {
       live: { label: '🔴 LIVE', color: '#ef4444' },
       scheduled: { label: '🕐 Scheduled', color: '#f59e0b' },
-      ended: { label: '✅ Ended', color: '#6b7280' },
+      ended: { label: '<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Ended', color: '#6b7280' },
     };
     const cfg = map[status] ?? map.ended;
     return (
@@ -230,7 +231,7 @@ const LiveSessionPage: React.FC = () => {
                   rel="noopener noreferrer"
                   style={styles.recordingLink}
                 >
-                  ▶ Watch Recording
+                  <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Watch Recording
                 </a>
               )}
               {session.status !== 'ended' && (
@@ -240,8 +241,8 @@ const LiveSessionPage: React.FC = () => {
                   onClick={() => setSelectedSession(session)}
                 >
                   {isTeacher
-                    ? session.status === 'live' ? '📡 Manage Live' : '🎬 Go Live'
-                    : session.status === 'live' ? '▶ Join Now' : '👁 Preview'}
+                    ? session.status === 'live' ? '📡 Manage Live' : '<PlaySquare className="w-6 h-6 inline-block" /> Go Live'
+                    : session.status === 'live' ? '<span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Join Now' : '👁 Preview'}
                 </button>
               )}
             </div>

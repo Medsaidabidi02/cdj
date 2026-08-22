@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import Hls from 'hls.js';
 import { Video, videoService } from '../lib/videoService';
+import { Lock, AlertTriangle } from 'lucide-react';
 
 interface VideoPlayerProps {
   video: Video;
@@ -261,7 +262,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {error && !previewLimitHit && (
         <div className="absolute inset-0 bg-black/85 flex items-center justify-center z-40" onClick={(e) => e.stopPropagation()}>
           <div className="text-center px-6">
-            <div className="text-4xl mb-4">⚠️</div>
+            <div className="text-4xl mb-4"><AlertTriangle className="w-12 h-12 text-amber-500" /></div>
             <p className="text-white/80 text-sm mb-4 max-w-xs">{error}</p>
             <button
               onClick={() => { setError(''); videoRef.current && (videoRef.current.currentTime = 0); }}
@@ -370,7 +371,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             <div className="flex items-center gap-2">
               {isPreviewMode && (
                 <span className="hidden sm:flex items-center gap-1 text-xs text-amber-300 font-medium bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
-                  🔒 Preview ({maxPreviewTime}s)
+                  <Lock className="w-6 h-6 inline-block" /> Preview ({maxPreviewTime}s)
                 </span>
               )}
               <button

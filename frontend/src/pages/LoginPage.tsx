@@ -3,6 +3,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import Header from '../components/Header';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from '../components/ui/Spinner';
+import { Lock, AlertTriangle, X, Mail } from 'lucide-react';
 
 interface LoginCredentials {
   email: string;
@@ -83,14 +85,14 @@ const LoginPage: React.FC = () => {
 
             {displayMessage && (
               <div className="mb-6 p-4 rounded-xl bg-orange-50 border border-orange-200 text-orange-800 text-sm font-medium flex items-start gap-3">
-                <span className="text-lg">⚠️</span>
+                <span className="text-lg"><AlertTriangle className="w-12 h-12 text-amber-500" /></span>
                 <span>{displayMessage}</span>
               </div>
             )}
 
             {displayError && (
               <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium flex items-start gap-3">
-                <span className="text-lg">❌</span>
+                <span className="text-lg"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></span>
                 <span>{displayError}</span>
               </div>
             )}
@@ -114,7 +116,7 @@ const LoginPage: React.FC = () => {
                     disabled={loading || authLoading}
                   />
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    ✉️
+                    <span className="inline-flex items-center justify-center"><Mail className="w-4 h-4" /></span>
                   </div>
                 </div>
               </div>
@@ -137,7 +139,7 @@ const LoginPage: React.FC = () => {
                     disabled={loading || authLoading}
                   />
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                    🔒
+                    <Lock className="w-6 h-6 inline-block" />
                   </div>
                 </div>
               </div>
@@ -149,10 +151,7 @@ const LoginPage: React.FC = () => {
               >
                 {loading || authLoading ? (
                   <span className="flex items-center gap-2">
-                    <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <Spinner />
                     {t('auth.login.connecting', 'Signing in...')}
                   </span>
                 ) : (

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import i18n from '../i18n';
 import { useTranslation } from 'react-i18next';
 import '../styles/language-switcher.css';
+import { Check } from 'lucide-react';
 
 type LangDef = {
   code: string;
@@ -107,7 +108,7 @@ const LanguageSwitcher: React.FC = () => {
             >
               <span className="lang-flag" aria-hidden>{l.svg}</span>
               <span className="lang-label">{l.label}</span>
-              {current === l.code && <span className="lang-check" aria-hidden>✓</span>}
+              {current === l.code && <span className="lang-check" aria-hidden><span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span></span>}
             </button>
           ))}
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertTriangle } from 'lucide-react';
 
 /**
  * Component shown when another tab is active
@@ -24,7 +25,7 @@ export const AnotherTabActive: React.FC = () => {
       textAlign: 'center'
     }}>
       <div style={{ fontSize: '72px', marginBottom: '24px' }}>
-        ⚠️
+        <AlertTriangle className="w-12 h-12 text-amber-500" />
       </div>
       
       <h1 style={{

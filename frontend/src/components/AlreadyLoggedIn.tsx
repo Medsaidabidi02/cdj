@@ -1,4 +1,5 @@
 import React from 'react';
+import { Lock } from 'lucide-react';
 
 interface AlreadyLoggedInProps {
   ownerLabel?: string;
@@ -32,7 +33,7 @@ export const AlreadyLoggedIn: React.FC<AlreadyLoggedInProps> = ({
       textAlign: 'center'
     }}>
       <div style={{ fontSize: '72px', marginBottom: '24px' }}>
-        🔐
+        <span className="inline-flex items-center justify-center"><Lock className="w-4 h-4" /></span>
       </div>
       
       <h1 style={{

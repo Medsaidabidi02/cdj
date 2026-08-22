@@ -18,6 +18,7 @@ import { io, Socket } from 'socket.io-client';
 import * as mediasoupClient from 'mediasoup-client';
 import type { Device } from 'mediasoup-client';
 import type { Transport } from 'mediasoup-client/lib/Transport';
+import { Play, GraduationCap, Users } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────
 
@@ -246,7 +247,7 @@ const StudentLiveViewer: React.FC<Props> = ({ sessionId, onStreamEnded }) => {
     return (
       <div style={styles.container}>
         <div style={styles.ended}>
-          <span style={{ fontSize: '3rem' }}>🎓</span>
+          <span style={{ fontSize: '3rem' }}><span className="inline-flex items-center justify-center"><GraduationCap className="w-4 h-4" /></span></span>
           <h2 style={{ margin: '0.5rem 0 0.25rem', color: '#f8fafc' }}>Session Ended</h2>
           <p style={{ color: '#94a3b8', margin: 0 }}>
             The teacher has ended this live session.
@@ -270,7 +271,7 @@ const StudentLiveViewer: React.FC<Props> = ({ sessionId, onStreamEnded }) => {
 
         {state === 'watching' && participantCount !== null && (
           <div style={styles.participantBadge}>
-            👥 {participantCount + 1} watching
+            <span className="inline-flex items-center justify-center"><Users className="w-4 h-4" /></span> {participantCount + 1} watching
           </div>
         )}
 
@@ -287,7 +288,7 @@ const StudentLiveViewer: React.FC<Props> = ({ sessionId, onStreamEnded }) => {
 
         {state === 'idle' && (
           <button id="student-join-btn" style={styles.joinBtn} onClick={joinStream}>
-            ▶ Join Live Session
+            <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Join Live Session
           </button>
         )}
 

@@ -1,4 +1,5 @@
 import { api } from './api';
+import { AlertTriangle, PlaySquare } from 'lucide-react';
 
 export interface Video {
   id: number;
@@ -43,7 +44,7 @@ export class VideoService {
    */
   async getAllVideosWithSubjects(): Promise<Video[]> {
     try {
-      console.log('🎬 Fetching all videos with HLS URLs...');
+      console.log('<PlaySquare className="w-6 h-6 inline-block" /> Fetching all videos with HLS URLs...');
       
       const response = await api.get<Video[]>('/api/videos');
       
@@ -119,7 +120,7 @@ export class VideoService {
    */
   async getVideosBySubject(subjectId: number): Promise<Video[]> {
     try {
-      console.log(`🎬 Fetching videos for subject ${subjectId}...`);
+      console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Fetching videos for subject ${subjectId}...`);
       
       const allVideos = await this.getAllVideosWithSubjects();
       const subjectVideos = allVideos.filter(video => video.subject_id === subjectId);
@@ -137,7 +138,7 @@ export class VideoService {
    */
   async getVideoById(videoId: number): Promise<Video | null> {
     try {
-      console.log(`🎬 Fetching video ${videoId}...`);
+      console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Fetching video ${videoId}...`);
       
       const response = await api.get<Video>(`/api/videos/${videoId}`);
       
@@ -163,7 +164,7 @@ export class VideoService {
   getVideoPlaybackUrl(video: Video, resolution?: string): string {
     // If resolution is specified and we have resolution_urls, use them
     if (resolution && video.resolution_urls && video.resolution_urls[resolution]) {
-      console.log(`🎬 Using ${resolution}p HLS URL for video ${video.id}`);
+      console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Using ${resolution}p HLS URL for video ${video.id}`);
       return video.resolution_urls[resolution];
     }
     
@@ -171,11 +172,11 @@ export class VideoService {
     const hlsUrl = video.hls_url || video.playback_url;
     
     if (hlsUrl) {
-      console.log(`🎬 Using default HLS URL for video ${video.id}: ${hlsUrl}`);
+      console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Using default HLS URL for video ${video.id}: ${hlsUrl}`);
       return hlsUrl;
     }
     
-    console.warn(`⚠️ No HLS URL found for video ${video.id}`);
+    console.warn(`<AlertTriangle className="w-12 h-12 text-amber-500" /> No HLS URL found for video ${video.id}`);
     return '';
   }
 
@@ -221,7 +222,7 @@ export class VideoService {
     }
     
     // Fallback to placeholder
-    console.log(`⚠️ No thumbnail found for video ${video.id}, using placeholder`);
+    console.log(`<AlertTriangle className="w-12 h-12 text-amber-500" /> No thumbnail found for video ${video.id}, using placeholder`);
     return '/api/placeholder/320/180';
   }
 
@@ -309,7 +310,7 @@ export class VideoService {
     const isValid = !!hlsUrl && hlsUrl.endsWith('.m3u8');
     
     if (!isValid) {
-      console.warn(`⚠️ Invalid or missing HLS URL for video ${video.id}`);
+      console.warn(`<AlertTriangle className="w-12 h-12 text-amber-500" /> Invalid or missing HLS URL for video ${video.id}`);
     }
     
     return isValid;
@@ -319,4 +320,4 @@ export class VideoService {
 // Export singleton instance
 export const videoService = new VideoService();
 
-console.log('🎬 VideoService initialized - Hetzner public HLS mode');
+console.log('<PlaySquare className="w-6 h-6 inline-block" /> VideoService initialized - Hetzner public HLS mode');

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Hls from 'hls.js';
 import { Video, videoService } from '../lib/videoService';
+import { AlertTriangle, PlaySquare, Play, X, Check } from 'lucide-react';
 
 interface CustomVideoPlayerProps {
   video: Video;
@@ -36,7 +37,7 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
 
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  console.log(`🎬 Custom Video Player initialized for: ${video.title} (User: Azizkh07)`);
+  console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Custom Video Player initialized for: ${video.title} (User: Azizkh07)`);
 
   // Initialize HLS.js for video playback
   useEffect(() => {
@@ -45,11 +46,11 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
 
     const hlsUrl = getVideoUrl();
     if (!hlsUrl) {
-      console.error('❌ No HLS URL available');
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> No HLS URL available');
       return;
     }
 
-    console.log('🎬 Initializing HLS for CustomVideoPlayer:', hlsUrl);
+    console.log('<PlaySquare className="w-6 h-6 inline-block" /> Initializing HLS for CustomVideoPlayer:', hlsUrl);
 
     // Check if HLS.js is supported
     if (Hls.isSupported()) {
@@ -69,17 +70,17 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
       hls.attachMedia(videoElement);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log('✅ HLS manifest parsed in CustomVideoPlayer');
+        console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> HLS manifest parsed in CustomVideoPlayer');
         setIsBuffering(false);
         if (autoPlay) {
           videoElement.play().catch(err => {
-            console.warn('⚠️ Autoplay prevented:', err);
+            console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Autoplay prevented:', err);
           });
         }
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error('❌ HLS error in CustomVideoPlayer:', data);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS error in CustomVideoPlayer:', data);
         setIsBuffering(false);
         if (data.fatal) {
           switch (data.type) {
@@ -106,10 +107,10 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
 
     } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
       // Native HLS support (Safari, iOS)
-      console.log('✅ Using native HLS support in CustomVideoPlayer');
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Using native HLS support in CustomVideoPlayer');
       videoElement.src = hlsUrl;
     } else {
-      console.error('❌ HLS not supported in this browser');
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS not supported in this browser');
     }
 
     // Cleanup
@@ -173,7 +174,7 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
     setIsPlaying(true);
     setIsBuffering(false);
     resetControlsTimeout();
-    console.log('▶️ Video playback started');
+    console.log('<span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Video playback started');
   };
 
   const handlePause = () => {
@@ -199,7 +200,7 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
 
   const handleCanPlay = () => {
     setIsBuffering(false);
-    console.log('✅ Video ready to play');
+    console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Video ready to play');
   };
 
   // Control handlers
@@ -220,7 +221,7 @@ const CustomVideoPlayer: React.FC<CustomVideoPlayerProps> = ({
       const newTime = (clickX / rect.width) * duration;
       
       if (!isAuthenticated && newTime > 10) {
-        console.log('⚠️ Seeking beyond preview limit blocked');
+        console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> Seeking beyond preview limit blocked');
         return;
       }
       

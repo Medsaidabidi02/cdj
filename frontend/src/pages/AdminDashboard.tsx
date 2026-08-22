@@ -8,6 +8,7 @@ import UserManagement from '../components/admin/UserManagement';
 import InboxManagement from '../components/admin/InboxManagement';
 import { User } from '../types';
 import '../styles/AdminDashboard.css';
+import { AlertTriangle, BookOpen, FileText, Users, X, Check, Video, Mailbox, RefreshCw, Plus } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -73,13 +74,13 @@ const AdminDashboard: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setUsersLoading(true);
-      console.log('👥 Fetching users for Medsaidabidi02...');
+      console.log('<span className="inline-flex items-center justify-center"><Users className="w-4 h-4" /></span> Fetching users for Medsaidabidi02...');
       
       const res: any = await api.get('/users');
-      console.log('✅ Users response for Medsaidabidi02:', res);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Users response for Medsaidabidi02:', res);
       
       if (res && res.success && Array.isArray(res.users)) {
-        // ✅ FIXED: Ensure all users have required properties including is_logged_in
+        // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Ensure all users have required properties including is_logged_in
         const normalizedUsers = res.users.map((user: any) => ({
           id: user.id,
           name: user.name || 'Nom inconnu',
@@ -99,7 +100,7 @@ const AdminDashboard: React.FC = () => {
           pendingApprovals: pending 
         }));
         
-        console.log(`✅ Loaded ${normalizedUsers.length} users for Medsaidabidi02`);
+        console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Loaded ${normalizedUsers.length} users for Medsaidabidi02`);
       } else if (Array.isArray(res)) {
         // Handle direct array response
         const normalizedUsers = res.map((user: any) => ({
@@ -114,13 +115,13 @@ const AdminDashboard: React.FC = () => {
         }));
         
         setUsers(normalizedUsers);
-        console.log(`✅ Loaded ${normalizedUsers.length} users (direct array) for Medsaidabidi02`);
+        console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Loaded ${normalizedUsers.length} users (direct array) for Medsaidabidi02`);
       } else {
-        console.warn('⚠️ Unexpected users response for Medsaidabidi02:', res);
+        console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Unexpected users response for Medsaidabidi02:', res);
         setUsers([]);
       }
     } catch (error) {
-      console.error('❌ Error fetching users for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error fetching users for Medsaidabidi02:', error);
       setUsers([]);
     } finally {
       setUsersLoading(false);
@@ -149,28 +150,28 @@ const AdminDashboard: React.FC = () => {
         isApproved: payload.is_approved ?? false 
       };
       
-      console.log('➕ Creating user for Medsaidabidi02 at 2025-09-09 18:18:36:', body);
+      console.log('<span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> Creating user for Medsaidabidi02 at 2025-09-09 18:18:36:', body);
       
       const res: any = await api.post('/users/create', body);
       
-      console.log('✅ User creation response for Medsaidabidi02:', res);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> User creation response for Medsaidabidi02:', res);
       
       if (res && res.success) {
         // Show success message immediately
         const credentials = res.credentials || { email, password };
-        alert(`✅ Utilisateur créé avec succès \n\nNom: ${name}\nEmail: ${credentials.email}\nMot de passe: ${credentials.password}\nStatut: ${payload.is_approved ? 'Approuvé' : 'En attente'}\n\nL'utilisateur peut maintenant se connecter.`);
+        alert(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Utilisateur créé avec succès \n\nNom: ${name}\nEmail: ${credentials.email}\nMot de passe: ${credentials.password}\nStatut: ${payload.is_approved ? 'Approuvé' : 'En attente'}\n\nL'utilisateur peut maintenant se connecter.`);
         
-        // ✅ SIMPLIFIED APPROACH: Just refresh the users list instead of trying to add manually
-        console.log('🔄 Refreshing users list after creation for Medsaidabidi02');
+        // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> SIMPLIFIED APPROACH: Just refresh the users list instead of trying to add manually
+        console.log('<span className="inline-flex items-center justify-center"><RefreshCw className="w-4 h-4" /></span> Refreshing users list after creation for Medsaidabidi02');
         await fetchUsers(); // This will fetch the updated list including the new user
         
       } else {
-        console.error('❌ User creation failed for Medsaidabidi02:', res);
-        alert('❌ Erreur lors de la création de l\'utilisateur');
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> User creation failed for Medsaidabidi02:', res);
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Erreur lors de la création de l\'utilisateur');
       }
     } catch (error) {
-      console.error('❌ Error creating user for Medsaidabidi02:', error);
-      alert(`❌ Erreur: ${getErrorMessage(error)}`);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error creating user for Medsaidabidi02:', error);
+      alert(`<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Erreur: ${getErrorMessage(error)}`);
     }
   };
 
@@ -239,11 +240,11 @@ const AdminDashboard: React.FC = () => {
   }
 
   const tabItems = [
-    { id: 'courses', label: 'Cours', icon: '📚' },
-    { id: 'videos', label: 'Vidéos', icon: '🎥' },
-    { id: 'blog', label: 'Blog', icon: '📝' },
-    { id: 'users', label: 'Utilisateurs', icon: '👥' },
-    { id: 'inbox', label: 'Inbox', icon: '📬' }
+    { id: 'courses', label: 'Cours', icon: <BookOpen className="w-12 h-12 text-slate-400" /> },
+    { id: 'videos', label: 'Vidéos', icon: <span className="inline-flex items-center justify-center"><Video className="w-4 h-4" /></span> },
+    { id: 'blog', label: 'Blog', icon: <span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span> },
+    { id: 'users', label: 'Utilisateurs', icon: <span className="inline-flex items-center justify-center"><Users className="w-4 h-4" /></span> },
+    { id: 'inbox', label: 'Inbox', icon: <span className="inline-flex items-center justify-center"><Mailbox className="w-4 h-4" /></span> }
   ];
 
   return (

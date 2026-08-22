@@ -1,4 +1,5 @@
 import { api, apiUtils } from './api';
+import { AlertTriangle } from 'lucide-react';
 
 export interface User {
   id: number;
@@ -96,7 +97,7 @@ export const authService = {
 
       return null;
     } catch (error) {
-      console.warn('⚠️ Could not verify session with server, using cache:', error);
+      console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Could not verify session with server, using cache:', error);
       // Fallback to cached data on network error only
       const cachedUser = apiUtils.getUserData();
       return cachedUser ? (cachedUser as User) : null;

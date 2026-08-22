@@ -3,6 +3,7 @@ import { User } from '../../types';
 import ManageUserCourses from './ManageUserCourses';
 import ConfirmDialog from '../ui/ConfirmDialog';
 import { api, getErrorMessage } from '../../lib/api';
+import { LogOut, Key, Users, X, Check, Search, Laptop, Smartphone } from 'lucide-react';
 
 interface Course {
   id: number;
@@ -19,7 +20,7 @@ interface UserManagementProps {
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({
-  users = [], // ✅ FIXED: Add default empty array
+  users = [], // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add default empty array
   onCreateUser,
   onApproveUser,
   onEditUser,
@@ -119,11 +120,11 @@ const UserManagement: React.FC<UserManagementProps> = ({
     is_approved: true
   });
 
-  // ✅ FIXED: Add safety checks for users array and user properties
+  // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add safety checks for users array and user properties
   const safeUsers = Array.isArray(users) ? users : [];
   
   const filteredUsers = safeUsers.filter(user => {
-    // ✅ FIXED: Add safety checks for user properties
+    // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add safety checks for user properties
     if (!user || typeof user !== 'object') return false;
     
     const userName = user.name || '';
@@ -148,7 +149,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
     return matchesSearch && matchesStatus && matchesLoginStatus && matchesCourse;
   });
 
-  // ✅ FIXED: Add safety check for pendingUsers
+  // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add safety check for pendingUsers
   const pendingUsers = safeUsers.filter(user => 
     user && typeof user === 'object' && user.is_approved === false
   );
@@ -161,7 +162,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
       setShowCreateModal(false);
       if (onRefresh) onRefresh();
     } catch (error) {
-      console.error('❌ Error creating user for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error creating user for Medsaidabidi02:', error);
       alert('Erreur lors de la création de l\'utilisateur');
     }
   };
@@ -176,15 +177,15 @@ const UserManagement: React.FC<UserManagementProps> = ({
         if (onRefresh) onRefresh();
       }
     } catch (error) {
-      console.error('❌ Error editing user for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error editing user for Medsaidabidi02:', error);
       alert('Erreur lors de la modification de l\'utilisateur');
     }
   };
 
   const openEditModal = (user: User) => {
-    // ✅ FIXED: Add safety checks for user properties
+    // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add safety checks for user properties
     if (!user || typeof user !== 'object') {
-      console.error('❌ Invalid user object for editing:', user);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Invalid user object for editing:', user);
       return;
     }
     
@@ -215,7 +216,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
         if (onRefresh) onRefresh();
       }
     } catch (error) {
-      console.error('❌ Error deleting user for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error deleting user for Medsaidabidi02:', error);
       alert('Erreur lors de la suppression de l\'utilisateur');
     } finally {
       setShowDeleteConfirm(false);
@@ -227,7 +228,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
   const openUserDetails = async (userId: number) => {
     try {
       setDetailsLoading(true);
-      console.log(`🔍 Fetching details for user ${userId}`);
+      console.log(`<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Fetching details for user ${userId}`);
       
       const res: any = await api.get(`/users/${userId}/details`);
       
@@ -238,7 +239,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
         alert('Erreur lors de la récupération des détails utilisateur');
       }
     } catch (error) {
-      console.error('❌ Error fetching user details:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error fetching user details:', error);
       alert(getErrorMessage(error));
     } finally {
       setDetailsLoading(false);
@@ -259,12 +260,12 @@ const UserManagement: React.FC<UserManagementProps> = ({
 
     try {
       setPasswordLoading(true);
-      console.log(`🔑 Updating password for user ${passwordUser.id}`);
+      console.log(`<span className="inline-flex items-center justify-center"><Key className="w-4 h-4" /></span> Updating password for user ${passwordUser.id}`);
       
       const res: any = await api.post(`/users/${passwordUser.id}/update-password`, { newPassword });
       
       if (res && res.success) {
-        alert('✅ Mot de passe mis à jour avec succès');
+        alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Mot de passe mis à jour avec succès');
         setShowPasswordModal(false);
         setPasswordUser(null);
         setNewPassword('');
@@ -273,7 +274,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
         alert('Erreur lors de la mise à jour du mot de passe');
       }
     } catch (error) {
-      console.error('❌ Error updating password:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error updating password:', error);
       alert(getErrorMessage(error));
     } finally {
       setPasswordLoading(false);
@@ -292,18 +293,18 @@ const UserManagement: React.FC<UserManagementProps> = ({
 
     try {
       setLogoutLoading(true);
-      console.log(`🚪 Forcing logout for user ${pendingLogoutUserId}`);
+      console.log(`<span className="inline-flex items-center justify-center"><LogOut className="w-4 h-4" /></span> Forcing logout for user ${pendingLogoutUserId}`);
       
       const res: any = await api.post(`/users/${pendingLogoutUserId}/force-logout`, {});
       
       if (res && res.success) {
-        alert('✅ Utilisateur déconnecté avec succès');
+        alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Utilisateur déconnecté avec succès');
         if (onRefresh) onRefresh();
       } else {
         alert('Erreur lors de la déconnexion de l\'utilisateur');
       }
     } catch (error) {
-      console.error('❌ Error forcing logout:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error forcing logout:', error);
       alert(getErrorMessage(error));
     } finally {
       setLogoutLoading(false);
@@ -316,18 +317,18 @@ const UserManagement: React.FC<UserManagementProps> = ({
   const confirmLogoutAll = async () => {
     try {
       setLogoutAllLoading(true);
-      console.log('🚪 Forcing logout for ALL users');
+      console.log('<span className="inline-flex items-center justify-center"><LogOut className="w-4 h-4" /></span> Forcing logout for ALL users');
 
       const res: any = await api.post('/users/logout-all', {});
 
       if (res && res.success) {
-        alert(`✅ ${res.message}`);
+        alert(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> ${res.message}`);
         if (onRefresh) onRefresh();
       } else {
         alert('Erreur lors de la déconnexion de tous les utilisateurs');
       }
     } catch (error) {
-      console.error('❌ Error forcing logout-all:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error forcing logout-all:', error);
       alert(getErrorMessage(error));
     } finally {
       setLogoutAllLoading(false);
@@ -346,12 +347,12 @@ const UserManagement: React.FC<UserManagementProps> = ({
         minute: '2-digit'
       });
     } catch (error) {
-      console.error('❌ Error formatting date for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error formatting date for Medsaidabidi02:', error);
       return 'Date invalide';
     }
   };
 
-  // ✅ FIXED: Add loading state for when users is undefined
+  // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Add loading state for when users is undefined
   if (!Array.isArray(users)) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -363,7 +364,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
     );
   }
 
-  console.log('👥 UserManagement rendered for Medsaidabidi02 at 2025-09-09 17:57:00', {
+  console.log('<span className="inline-flex items-center justify-center"><Users className="w-4 h-4" /></span> UserManagement rendered for Medsaidabidi02 at 2025-09-09 17:57:00', {
     totalUsers: safeUsers.length,
     filteredUsers: filteredUsers.length,
     pendingUsers: pendingUsers.length
@@ -482,7 +483,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {/* ✅ FIXED: Use filteredUsers and filter out admin users safely */}
+              {/* <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Use filteredUsers and filter out admin users safely */}
               {filteredUsers.filter(u => u && typeof u === 'object' && !u.is_admin).map(user => (
                 <tr key={user.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -573,7 +574,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-900">Créer un Utilisateur</h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-600"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></button>
             </div>
 
             <form onSubmit={handleCreateUser} className="space-y-4">
@@ -646,7 +647,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-900">Modifier Utilisateur</h3>
-              <button onClick={() => setShowEditModal(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => setShowEditModal(false)} className="text-gray-400 hover:text-gray-600"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></button>
             </div>
 
             <form onSubmit={handleEditUser} className="space-y-4">
@@ -730,7 +731,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
           <div className="bg-white rounded-2xl p-6 w-full max-w-lg">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-900">Détails de l'utilisateur</h3>
-              <button onClick={() => { setShowDetailsModal(false); setDetailsUser(null); }} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => { setShowDetailsModal(false); setDetailsUser(null); }} className="text-gray-400 hover:text-gray-600"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></button>
             </div>
 
             <div className="space-y-4">
@@ -796,7 +797,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
                       >
                         {/* Device icon based on OS */}
                         <div className={`mt-0.5 text-xl leading-none ${idx === 0 ? 'text-green-600' : 'text-gray-400'}`}>
-                          {device.os_name === 'iOS' || device.os_name === 'Android' ? '📱' : '💻'}
+                          {device.os_name === 'iOS' || device.os_name === 'Android' ?  <span className="inline-flex items-center justify-center"><Smartphone className="w-4 h-4" /></span> : <span className="inline-flex items-center justify-center"><Laptop className="w-4 h-4" /></span>}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -852,7 +853,7 @@ const UserManagement: React.FC<UserManagementProps> = ({
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-gray-900">Changer le mot de passe</h3>
-              <button onClick={() => { setShowPasswordModal(false); setPasswordUser(null); setNewPassword(''); }} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => { setShowPasswordModal(false); setPasswordUser(null); setNewPassword(''); }} className="text-gray-400 hover:text-gray-600"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></button>
             </div>
 
             <div className="mb-4 p-3 bg-gray-50 rounded-lg">

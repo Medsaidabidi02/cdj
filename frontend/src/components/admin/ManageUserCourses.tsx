@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../lib/api';
 import type { Course } from '../../types';
+import { Play, X, ChevronDown, Check } from 'lucide-react';
 
 interface Subject {
   id: number;
@@ -237,7 +238,7 @@ const ManageUserCourses: React.FC<ManageCoursesProps> = ({ userId, open, onClose
       <div className="bg-white rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-auto">
         <div className="flex justify-between items-center mb-4 sticky top-0 bg-white pb-2 border-b">
           <h3 className="text-lg font-semibold">Gérer les cours pour l'utilisateur #{userId}</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></button>
         </div>
 
         <div className="space-y-3">
@@ -268,7 +269,7 @@ const ManageUserCourses: React.FC<ManageCoursesProps> = ({ userId, open, onClose
                         onClick={() => setExpandedCourse(isExpanded ? null : c.id)}
                         className="px-3 py-1 text-sm rounded bg-gray-100 hover:bg-gray-200"
                       >
-                        {isExpanded ? '▼ Masquer' : '▶ Matières'}
+                        {isExpanded ? '<span className="inline-flex items-center justify-center"><ChevronDown className="w-4 h-4" /></span> Masquer' : '<span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Matières'}
                       </button>
                     )}
                     <button
@@ -281,7 +282,7 @@ const ManageUserCourses: React.FC<ManageCoursesProps> = ({ userId, open, onClose
                           : 'bg-gray-100 text-gray-700'
                       }`}
                     >
-                      {hasFullAccess ? '✓ Cours complet' : hasAnyAccess ? 'Partiel' : 'Ajouter cours'}
+                      {hasFullAccess ? '<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Cours complet' : hasAnyAccess ? 'Partiel' : 'Ajouter cours'}
                     </button>
                   </div>
                 </div>

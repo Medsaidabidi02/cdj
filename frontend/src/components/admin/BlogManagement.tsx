@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api, { apiUtils } from '../../lib/api'; // adjust path if your api instance lives elsewhere
+import { AlertTriangle, Sparkles, User, BarChart, FileText, Lightbulb, Edit, Rocket, Trash, Users, X, Check, Search, File, Save, Link, Calendar, Plus } from 'lucide-react';
 
 interface BlogPost {
   id: number;
@@ -44,7 +45,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       <div className="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <span className="text-2xl">⚠️</span>
+            <span className="text-2xl"><AlertTriangle className="w-12 h-12 text-amber-500" /></span>
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
           <p className="text-sm text-gray-600 mb-6">{message}</p>
@@ -129,11 +130,11 @@ const BlogManagement: React.FC = () => {
         params.append('search', searchTerm);
       }
   
-      console.log('🔍 Fetching posts...');
+      console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Fetching posts...');
       const data = await api.get(`/blog?${params.toString()}`);
   
       // FIX: Your API client already extracts the data, so data is the posts array directly
-      console.log('✅ Posts received:', Array.isArray(data) ? data.length + ' posts' : 'unexpected format');
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Posts received:', Array.isArray(data) ? data.length + ' posts' : 'unexpected format');
       
       if (Array.isArray(data)) {
         setPosts(data);
@@ -142,11 +143,11 @@ const BlogManagement: React.FC = () => {
       } else if (data && typeof data === 'object' && 'data' in data) {
         setPosts(data.data || []);
       } else {
-        console.warn('⚠️ Unexpected posts response format:', typeof data);
+        console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Unexpected posts response format:', typeof data);
         setPosts([]);
       }
     } catch (error) {
-      console.error('❌ ACTUAL error fetching posts:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ACTUAL error fetching posts:', error);
       if (handleAuthError(error)) return;
       setPosts([]);
     } finally {
@@ -156,11 +157,11 @@ const BlogManagement: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      console.log('📊 Fetching stats...');
+      console.log('<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Fetching stats...');
       const data = await api.get(`/blog/admin/stats`);
   
       // FIX: Your API client already extracts the data, so data is the stats object directly
-      console.log('✅ Stats received:', data);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Stats received:', data);
       
       // Check if it's already a stats object with expected properties
       if (data && typeof data === 'object' && ('total_posts' in data || 'stats' in data)) {
@@ -173,7 +174,7 @@ const BlogManagement: React.FC = () => {
           total_authors: statsData.total_authors || 0
         });
       } else {
-        console.warn('⚠️ Unexpected stats response format:', typeof data);
+        console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Unexpected stats response format:', typeof data);
         setStats({
           total_posts: 0,
           published_posts: 0,
@@ -182,7 +183,7 @@ const BlogManagement: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error('❌ ACTUAL error fetching stats:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ACTUAL error fetching stats:', error);
       if (handleAuthError(error)) return;
       setStats({
         total_posts: 0,
@@ -198,7 +199,7 @@ const BlogManagement: React.FC = () => {
     e.preventDefault();
   
     try {
-      console.log('💾 BlogManagement: Submitting form data:', formData);
+      console.log('<span className="inline-flex items-center justify-center"><Save className="w-4 h-4" /></span> BlogManagement: Submitting form data:', formData);
   
       const payload = new FormData();
       payload.append('title', formData.title);
@@ -211,14 +212,14 @@ const BlogManagement: React.FC = () => {
       }
   
       const endpoint = selectedPost ? `/blog/${selectedPost.id}` : '/blog';
-      console.log(`🚀 BlogManagement: ${selectedPost ? 'PUT' : 'POST'} request to: ${endpoint}`);
+      console.log(`<span className="inline-flex items-center justify-center"><Rocket className="w-4 h-4" /></span> BlogManagement: ${selectedPost ? 'PUT' : 'POST'} request to: ${endpoint}`);
   
       const result = selectedPost
         ? await api.put(endpoint, payload)
         : await api.post(endpoint, payload);
   
       // FIX: Your API client extracts the data, so result is the post object or success response
-      console.log('✅ Save result:', result);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Save result:', result);
       
       // Check for success indicators
       const isSuccess = (result && typeof result === 'object' && (
@@ -228,20 +229,20 @@ const BlogManagement: React.FC = () => {
       ));
   
       if (isSuccess) {
-        alert(`✅ Article ${selectedPost ? 'modifié' : 'créé'} avec succès!`);
+        alert(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Article ${selectedPost ? 'modifié' : 'créé'} avec succès!`);
         setShowEditor(false);
         setSelectedPost(null);
         resetForm();
         fetchPosts();
         fetchStats();
       } else {
-        console.error('❌ BlogManagement: Unexpected save response:', result);
-        alert('❌ Erreur lors de la sauvegarde.');
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> BlogManagement: Unexpected save response:', result);
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Erreur lors de la sauvegarde.');
       }
     } catch (error) {
-      console.error('❌ BlogManagement: ACTUAL error saving post:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> BlogManagement: ACTUAL error saving post:', error);
       if (handleAuthError(error)) return;
-      alert('❌ Erreur lors de la sauvegarde. Vérifiez que le backend est en marche.');
+      alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Erreur lors de la sauvegarde. Vérifiez que le backend est en marche.');
     }
   };
 
@@ -260,31 +261,31 @@ const BlogManagement: React.FC = () => {
       const result = await api.delete(`/blog/${confirmModal.postId}`);
   
       // Debug: Log the actual result to understand what your API returns
-      console.log('🔍 Delete result type:', typeof result);
-      console.log('🔍 Delete result value:', result);
-      console.log('🔍 Delete result keys:', result && typeof result === 'object' ? Object.keys(result) : 'not an object');
+      console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Delete result type:', typeof result);
+      console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Delete result value:', result);
+      console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Delete result keys:', result && typeof result === 'object' ? Object.keys(result) : 'not an object');
   
       // For DELETE operations, if no error was thrown, it's typically successful
       // Most REST APIs return 204 (no content) or 200 with minimal response for successful deletes
       
       // If we reach here without throwing, the delete was successful
-      alert('✅ Article supprimé avec succès!');
+      alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Article supprimé avec succès!');
       fetchPosts();
       fetchStats();
   
     } catch (error: unknown) {
-      console.error('❌ ACTUAL error deleting post:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ACTUAL error deleting post:', error);
       if (handleAuthError(error)) return;
       
       // Check if it's actually a "not found" error vs server error
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (errorMessage.includes('not found') || errorMessage.includes('404')) {
-        alert('⚠️ Article introuvable (peut-être déjà supprimé)');
+        alert('<AlertTriangle className="w-12 h-12 text-amber-500" /> Article introuvable (peut-être déjà supprimé)');
         // Refresh the list anyway to sync with server state
         fetchPosts();
         fetchStats();
       } else {
-        alert('❌ Erreur lors de la suppression');
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Erreur lors de la suppression');
       }
     } finally {
       setConfirmModal({ isOpen: false, postId: null, postTitle: '' });
@@ -325,27 +326,27 @@ const BlogManagement: React.FC = () => {
   // New checkAuthStatus uses the same auth key as the client (authToken)
   const checkAuthStatus = () => {
     const token = apiUtils.getAuthToken();
-    console.log('🔍 Auth check - Token exists:', !!token);
+    console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Auth check - Token exists:', !!token);
     return !!token;
   };
 
   // Test backend connection (uses api and respects auth)
   const testConnection = async () => {
     try {
-      console.log('🔗 BlogManagement: Testing backend connection...');
-      console.log('🔍 Auth status:', checkAuthStatus());
+      console.log('<span className="inline-flex items-center justify-center"><Link className="w-4 h-4" /></span> BlogManagement: Testing backend connection...');
+      console.log('<span className="inline-flex items-center justify-center"><Search className="w-4 h-4" /></span> Auth status:', checkAuthStatus());
 
       const data = await api.get<{ success: boolean; posts?: BlogPost[] }>(`/blog`);
       // api.get returns parsed JSON; inspect it
       if (data && (data as any).success) {
-        alert(`✅ Backend connection OK! Found ${(data as any).posts?.length || 0} posts.`);
+        alert(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Backend connection OK! Found ${(data as any).posts?.length || 0} posts.`);
       } else {
-        alert('❌ Backend responded but returned an error or unexpected format.');
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Backend responded but returned an error or unexpected format.');
       }
     } catch (error) {
-      console.error('❌ BlogManagement: Connection test failed:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> BlogManagement: Connection test failed:', error);
       if (handleAuthError(error)) return;
-      alert('❌ Cannot connect to backend. Make sure it\'s running on http://localhost:5001');
+      alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Cannot connect to backend. Make sure it\'s running on http://localhost:5001');
     }
   };
 
@@ -364,7 +365,7 @@ const BlogManagement: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              📝 {selectedPost ? "Modifier l'article" : 'Nouvel article'}
+              <span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span> {selectedPost ? "Modifier l'article" : 'Nouvel article'}
             </h2>
             <p className="text-gray-600">{selectedPost ? "Modifiez l'article" : 'Créez un nouvel article de blog'}</p>
           </div>
@@ -418,7 +419,7 @@ const BlogManagement: React.FC = () => {
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 font-mono text-sm"
                 placeholder="Écrivez le contenu de votre article en Markdown ou HTML..."
               />
-              <p className="text-xs text-gray-500 mt-1">💡 Vous pouvez utiliser du HTML ou Markdown pour le formatage</p>
+              <p className="text-xs text-gray-500 mt-1"><span className="inline-flex items-center justify-center"><Lightbulb className="w-4 h-4" /></span> Vous pouvez utiliser du HTML ou Markdown pour le formatage</p>
             </div>
 
             {/* Cover Image */}
@@ -460,7 +461,7 @@ const BlogManagement: React.FC = () => {
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-105"
               >
-                {selectedPost ? "💾 Modifier l'article" : "✨ Créer l'article"}
+                {selectedPost ? "Modifier l'article" : "Créer l'article"}
               </button>
             </div>
           </form>
@@ -483,7 +484,7 @@ const BlogManagement: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">📝 Gestion des Articles</h2>
+          <h2 className="text-2xl font-bold text-gray-900"><span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span> Gestion des Articles</h2>
           <p className="text-gray-600">Gérez tous les articles de votre blog</p>
         </div>
         <div className="flex space-x-2">
@@ -492,7 +493,7 @@ const BlogManagement: React.FC = () => {
             onClick={handleNewPost}
             className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105"
           >
-            ➕ Nouvel Article
+            <span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> Nouvel Article
           </button>
         </div>
       </div>
@@ -506,7 +507,7 @@ const BlogManagement: React.FC = () => {
                 <p className="text-gray-600 text-sm font-medium">Total Articles</p>
                 <p className="text-3xl font-bold text-blue-600 mt-2">{stats.total_posts}</p>
               </div>
-              <span className="text-3xl">📝</span>
+              <span className="text-3xl"><span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span></span>
             </div>
           </div>
 
@@ -516,7 +517,7 @@ const BlogManagement: React.FC = () => {
                 <p className="text-gray-600 text-sm font-medium">Publiés</p>
                 <p className="text-3xl font-bold text-green-600 mt-2">{stats.published_posts}</p>
               </div>
-              <span className="text-3xl">✅</span>
+              <span className="text-3xl"><span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span></span>
             </div>
           </div>
 
@@ -526,7 +527,7 @@ const BlogManagement: React.FC = () => {
                 <p className="text-gray-600 text-sm font-medium">Brouillons</p>
                 <p className="text-3xl font-bold text-orange-600 mt-2">{stats.draft_posts}</p>
               </div>
-              <span className="text-3xl">📄</span>
+              <span className="text-3xl"><span className="inline-flex items-center justify-center"><File className="w-4 h-4" /></span></span>
             </div>
           </div>
 
@@ -536,7 +537,7 @@ const BlogManagement: React.FC = () => {
                 <p className="text-gray-600 text-sm font-medium">Auteurs</p>
                 <p className="text-3xl font-bold text-purple-600 mt-2">{stats.total_authors}</p>
               </div>
-              <span className="text-3xl">👥</span>
+              <span className="text-3xl"><span className="inline-flex items-center justify-center"><Users className="w-4 h-4" /></span></span>
             </div>
           </div>
         </div>
@@ -565,7 +566,7 @@ const BlogManagement: React.FC = () => {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="🔍 Rechercher un article..."
+              placeholder="Rechercher un article..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -599,7 +600,7 @@ const BlogManagement: React.FC = () => {
                     />
                   ) : (
                     <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <span className="text-2xl">📝</span>
+                      <span className="text-2xl"><span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span></span>
                     </div>
                   )}
 
@@ -610,14 +611,14 @@ const BlogManagement: React.FC = () => {
                         <h3 className="text-lg font-semibold text-gray-900 truncate">{post.title}</h3>
                         {post.excerpt && <p className="text-sm text-gray-600 mt-1 line-clamp-2">{post.excerpt}</p>}
                         <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-                          <span>👤 {post.author_name || '—'}</span>
-                          <span>📅 {post.created_at ? new Date(post.created_at).toLocaleDateString('fr-FR') : '—'}</span>
+                          <span><span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span> {post.author_name || '—'}</span>
+                          <span><span className="inline-flex items-center justify-center"><Calendar className="w-4 h-4" /></span> {post.created_at ? new Date(post.created_at).toLocaleDateString('fr-FR') : '—'}</span>
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${
                               post.published ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'
                             }`}
                           >
-                            {post.published ? '✅ Publié' : '📄 Brouillon'}
+                            {post.published ? '<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Publié' : '<span className="inline-flex items-center justify-center"><File className="w-4 h-4" /></span> Brouillon'}
                           </span>
                         </div>
                       </div>
@@ -629,14 +630,14 @@ const BlogManagement: React.FC = () => {
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
                           title="Modifier"
                         >
-                          ✏️
+                          <span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span>
                         </button>
                         <button
                           onClick={() => handleDeleteRequest(post)}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
                           title="Supprimer"
                         >
-                          🗑️
+                          <span className="inline-flex items-center justify-center"><Trash className="w-4 h-4" /></span>
                         </button>
                       </div>
                     </div>

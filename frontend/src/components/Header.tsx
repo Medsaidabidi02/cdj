@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { api, getAvatarUrl } from '../lib/api';
 import { useNotifications } from '../lib/NotificationContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FileText, Lightbulb, Bell, Video, Mail } from 'lucide-react';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -89,7 +91,7 @@ const Header: React.FC = () => {
           {isAuthenticated && user ? (
             <div className="relative ml-2">
               <div className="flex items-center gap-2">
-                {/* 🔔 Notifications Bell */}
+                {/* <span className="inline-flex items-center justify-center"><Bell className="w-4 h-4" /></span> Notifications Bell */}
                 <div className="relative">
                   <button
                     onClick={() => setIsNotifOpen(!isNotifOpen)}
@@ -100,17 +102,24 @@ const Header: React.FC = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-1 ring-rose-500/20">
+                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[12px] font-extrabold flex items-center justify-center rounded-full border-2 border-white shadow-sm ring-1 ring-rose-500/20">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
                   </button>
 
                   {/* Notifications Dropdown */}
+                  <AnimatePresence>
                   {isNotifOpen && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setIsNotifOpen(false)}></div>
-                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 z-20 py-2 transform origin-top-right transition-all animate-slide-up`}>
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 z-20 py-2 transform origin-top-right`}
+                      >
                         <div className="px-4 py-2 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                           <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
                           {unreadCount > 0 && (
@@ -142,12 +151,12 @@ const Header: React.FC = () => {
                                     notif.type === 'inbox' ? 'bg-teal-100 text-teal-600' :
                                     'bg-slate-100 text-slate-600'
                                   }`}>
-                                    {notif.type === 'blog' ? '📝' : notif.type === 'video' ? '📽️' : notif.type === 'inbox' ? '✉️' : '🔔'}
+                                    {notif.type === 'blog' ?  <span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span> : notif.type === 'video' ?  <span className="inline-flex items-center justify-center"><Video className="w-4 h-4" /></span> : notif.type === 'inbox' ?  <span className="inline-flex items-center justify-center"><Mail className="w-4 h-4" /></span> : <span className="inline-flex items-center justify-center"><Bell className="w-4 h-4" /></span>}
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <div className="flex justify-between items-start gap-2">
                                       <p className={`text-sm font-bold truncate ${!notif.is_read ? 'text-slate-900' : 'text-slate-600'}`}>{notif.title}</p>
-                                      <span className="text-[10px] text-slate-400 whitespace-nowrap mt-0.5">
+                                      <span className="text-[12px] text-slate-400 whitespace-nowrap mt-0.5">
                                         {new Date(notif.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                                       </span>
                                     </div>
@@ -162,7 +171,7 @@ const Header: React.FC = () => {
                           ) : (
                             <div className="py-12 text-center">
                               <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <span className="text-2xl text-slate-300">🔔</span>
+                                <span className="text-2xl text-slate-300"><span className="inline-flex items-center justify-center"><Bell className="w-4 h-4" /></span></span>
                               </div>
                               <p className="text-sm text-slate-400 font-medium">Aucune notification pour le moment</p>
                             </div>
@@ -173,16 +182,17 @@ const Header: React.FC = () => {
                         {isIOS && (
                           <div className="px-4 py-3 bg-amber-50 border-t border-amber-100">
                              <div className="flex gap-2">
-                                <span className="text-amber-500 text-lg">💡</span>
-                                <p className="text-[11px] text-amber-800 leading-tight">
+                                <span className="text-amber-500 text-lg"><span className="inline-flex items-center justify-center"><Lightbulb className="w-4 h-4" /></span></span>
+                                <p className="text-xs text-amber-800 leading-tight">
                                    <strong>Utilisateurs iOS:</strong> Pour recevoir les notifications, appuyez sur "Partager" puis "Sur l'écran d'accueil".
                                 </p>
                              </div>
                           </div>
                         )}
-                      </div>
+                      </motion.div>
                     </>
                   )}
+                  </AnimatePresence>
                 </div>
 
                 <div className="h-8 w-px bg-slate-200 mx-1"></div>
@@ -211,8 +221,15 @@ const Header: React.FC = () => {
                 </button>
               </div>
 
+              <AnimatePresence>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-elegant border border-slate-100 overflow-hidden z-50 animate-slide-up">
+                <motion.div 
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-elegant border border-slate-100 overflow-hidden z-50"
+                >
                   <div className="px-4 py-3 bg-slate-50 border-b border-slate-100">
                     <p className="text-xs text-slate-500 mb-0.5">{t('user.logged_in_as', 'Signed in as')}</p>
                     <p className="text-sm font-bold text-slate-900 truncate">{user.email}</p>
@@ -245,8 +262,9 @@ const Header: React.FC = () => {
                       {isLoggingOut ? t('auth.logging_out', 'Logging out...') : t('auth.logout', 'Logout')}
                     </button>
                   </div>
-                </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </div>
           ) : (
             <div className="flex items-center gap-3 ml-4">

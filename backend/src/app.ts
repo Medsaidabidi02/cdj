@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { usersRoutes } from './routes/users';
 import { userCoursesRoutes } from './routes/userCourses';
-import { debugRoutes } from './routes/debug';
+
 import { authRoutes } from './routes/auth';
 import { blogRoutes } from './routes/blog';
 import { videoRoutes } from './routes/videos';
@@ -15,7 +15,7 @@ import { inboxRoutes } from './routes/inbox';
 import { videoProgressRoutes } from './routes/videoProgress';
 import { publicRoutes } from './routes/public';
 import { notificationRoutes } from './routes/notifications';
-import { liveStreamRoutes } from './routes/liveStream';
+
 
 
 
@@ -168,13 +168,7 @@ console.log('✅ Video Progress routes configured: /api/video-progress');
 app.use('/api/notifications', notificationRoutes);
 console.log('✅ Notification routes configured: /api/notifications');
 
-app.use('/api/live', liveStreamRoutes);
-console.log('✅ Live stream routes configured: /api/live');
 
-
-// Debug routes last (usually admin only)
-app.use('/api/debug', debugRoutes);
-console.log('✅ Debug routes configured: /api/debug');
 
 console.log('🔗 All API routes configured successfully');
 

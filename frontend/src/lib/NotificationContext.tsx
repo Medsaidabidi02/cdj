@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthContext';
 import { api } from './api';
 import toast from 'react-hot-toast'; // Assuming react-hot-toast is available or similar
+import { Bell, X, Check, Video, Clipboard, Mail } from 'lucide-react';
 
 interface Notification {
   id: number;
@@ -79,16 +80,16 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
                 'bg-gradient-to-br from-slate-400 to-slate-600 text-white'
               }`}>
                 <span className="text-xl">
-                  {notif.type === 'blog' ? '📋' : notif.type === 'video' ? '🎥' : notif.type === 'inbox' ? '✉️' : '🔔'}
+                  {notif.type === 'blog' ?  <span className="inline-flex items-center justify-center"><Clipboard className="w-4 h-4" /></span> : notif.type === 'video' ?  <span className="inline-flex items-center justify-center"><Video className="w-4 h-4" /></span> : notif.type === 'inbox' ?  <span className="inline-flex items-center justify-center"><Mail className="w-4 h-4" /></span> : <span className="inline-flex items-center justify-center"><Bell className="w-4 h-4" /></span>}
                 </span>
               </div>
               
               <div className="flex-1 min-w-0 pr-4">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md">
+                  <span className="text-[12px] font-black uppercase tracking-widest text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md">
                     {notif.type || 'SYSTEM'}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-medium">Maintenant</span>
+                  <span className="text-[12px] text-slate-400 font-medium">Maintenant</span>
                 </div>
                 <h4 className="text-sm font-black text-slate-900 truncate leading-tight">
                   {notif.title}
@@ -122,7 +123,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
                     else if (notif.type === 'inbox') window.location.href = '/inbox';
                     else if (notif.type === 'video') window.location.href = `/course/${notif.rel_id}`;
                   }}
-                  className="w-full py-1.5 px-3 text-[11px] font-bold text-teal-600 hover:bg-teal-600 hover:text-white rounded-lg transition-all"
+                  className="w-full py-1.5 px-3 text-xs font-bold text-teal-600 hover:bg-teal-600 hover:text-white rounded-lg transition-all"
                 >
                   Voir les détails →
                 </button>
@@ -195,9 +196,9 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         userAgent: navigator.userAgent
       });
       
-      console.log('✅ Subscribed to push notifications');
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Subscribed to push notifications');
     } catch (error) {
-      console.error('❌ Failed to subscribe to push notifications', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Failed to subscribe to push notifications', error);
     }
   };
 

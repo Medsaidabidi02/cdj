@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../lib/api';
 import { Video } from '../lib/videoService';
 import { useAuth } from '../lib/AuthContext';
+import { BookOpen, Play } from 'lucide-react';
 
 interface ContinueWatchingItem {
   videoId: number;
@@ -246,7 +247,7 @@ const ContinueWatching: React.FC<ContinueWatchingProps> = ({ onVideoSelect, clas
             marginRight: '12px',
             fontSize: '16px'
           }}>
-            ▶️
+            <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span>
           </span>
           {t('continue_watching.title', 'Continue Watching')}
         </h2>
@@ -432,7 +433,7 @@ const ContinueWatching: React.FC<ContinueWatchingProps> = ({ onVideoSelect, clas
                   color: 'white',
                   fontSize: '40px'
                 }}>
-                  📚
+                  <BookOpen className="w-12 h-12 text-slate-400" />
                 </div>
               )}
               
@@ -461,7 +462,7 @@ const ContinueWatching: React.FC<ContinueWatchingProps> = ({ onVideoSelect, clas
                   color: '#22c55e',
                   fontSize: '20px'
                 }}>
-                  ▶
+                  <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span>
                 </div>
               </div>
               

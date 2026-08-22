@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api, apiUtils, getErrorMessage } from '../../lib/api';
+import { Lock, User, FileText, Lightbulb, Edit, X, Check, Upload, Wrench, Ban, RefreshCw, BookOpen, Save, Plus } from 'lucide-react';
 
 interface SubjectFormProps {
   isOpen: boolean;
@@ -34,11 +35,11 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  console.log(`📖 SubjectForm initialized for Azizkh07 at UTC: 2025-08-20 13:45:13`);
+  console.log(`<span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span> SubjectForm initialized for Azizkh07 at UTC: 2025-08-20 13:45:13`);
 
   useEffect(() => {
     if (editSubject) {
-      console.log('✏️ Loading existing subject data for editing:', editSubject.title);
+      console.log('<span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span> Loading existing subject data for editing:', editSubject.title);
       setFormData({
         title: editSubject.title || '',
         description: editSubject.description || '',
@@ -78,47 +79,47 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
   
     // ENHANCED: Pre-flight authentication check
     if (!apiUtils.isAuthenticated()) {
-      setError('❌ Not authenticated. Please log in first.');
+      setError('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Not authenticated. Please log in first.');
       setLoading(false);
       return;
     }
   
     const user = apiUtils.getUserData();
     if (!user?.is_admin) {
-      setError('❌ Admin privileges required to create/edit subjects.');
+      setError('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Admin privileges required to create/edit subjects.');
       setLoading(false);
       return;
     }
   
     try {
       const token = apiUtils.getAuthToken();
-      console.log(`💾 ${editSubject ? 'Updating' : 'Creating'} subject for Medsaidabidi02 at 2025-09-09 16:38:37...`);
-      console.log(`🔐 Using token: ${token ? token.substring(0, 15) + '...' : 'MISSING'}`);
-      console.log(`👤 User: ${user.name} (ID: ${user.id}, Admin: ${user.is_admin})`);
+      console.log(`<span className="inline-flex items-center justify-center"><Save className="w-4 h-4" /></span> ${editSubject ? 'Updating' : 'Creating'} subject for Medsaidabidi02 at 2025-09-09 16:38:37...`);
+      console.log(`<span className="inline-flex items-center justify-center"><Lock className="w-4 h-4" /></span> Using token: ${token ? token.substring(0, 15) + '...' : 'MISSING'}`);
+      console.log(`<span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span> User: ${user.name} (ID: ${user.id}, Admin: ${user.is_admin})`);
   
       const payload = {
         ...formData,
         course_id: courseId
       };
   
-      console.log('📤 Sending payload (auto-ordering):', payload);
+      console.log('<span className="inline-flex items-center justify-center"><Upload className="w-4 h-4" /></span> Sending payload (auto-ordering):', payload);
   
       let response;
       if (editSubject) {
-        console.log(`🔄 PUT request to /api/subjects/${editSubject.id}`);
+        console.log(`<span className="inline-flex items-center justify-center"><RefreshCw className="w-4 h-4" /></span> PUT request to /api/subjects/${editSubject.id}`);
         response = await api.put(`/api/subjects/${editSubject.id}`, payload);
       } else {
-        console.log('➕ POST request to /api/subjects');
+        console.log('<span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> POST request to /api/subjects');
         response = await api.post('/api/subjects', payload);
       }
   
-      console.log('✅ Subject saved successfully with auto-ordering for Medsaidabidi02:', response);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Subject saved successfully with auto-ordering for Medsaidabidi02:', response);
       
-      // ✅ FIXED: Extract actual subject data from MySQL5 response
+      // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Extract actual subject data from MySQL5 response
       let actualSubject;
       if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
         actualSubject = response.data;
-        console.log('✅ Extracted subject data from MySQL5 response for Medsaidabidi02:', actualSubject);
+        console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Extracted subject data from MySQL5 response for Medsaidabidi02:', actualSubject);
       } else {
         actualSubject = response;
       }
@@ -127,20 +128,20 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
       onClose();
       
     } catch (error: any) {
-      console.error('❌ Error saving subject for Medsaidabidi02:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error saving subject for Medsaidabidi02:', error);
       
       const errorMessage = getErrorMessage(error);
       
       if (error.message?.includes('401') || errorMessage.includes('Unauthorized')) {
-        setError('🔒 Authentication failed. Your session may have expired. Please log in again.');
+        setError('<Lock className="w-6 h-6 inline-block" /> Authentication failed. Your session may have expired. Please log in again.');
       } else if (error.message?.includes('403') || errorMessage.includes('Forbidden')) {
-        setError('🚫 Access denied. Admin privileges required.');
+        setError('<span className="inline-flex items-center justify-center"><Ban className="w-4 h-4" /></span> Access denied. Admin privileges required.');
       } else if (error.message?.includes('400')) {
-        setError('📝 Invalid data. Please check all required fields.');
+        setError('<span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span> Invalid data. Please check all required fields.');
       } else if (error.message?.includes('500')) {
-        setError('🛠️ Server error. Please try again later.');
+        setError('<span className="inline-flex items-center justify-center"><Wrench className="w-4 h-4" /></span> Server error. Please try again later.');
       } else {
-        setError(`❌ ${errorMessage}`);
+        setError(`<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ${errorMessage}`);
       }
     } finally {
       setLoading(false);
@@ -161,14 +162,14 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">
-              📖 {editSubject ? 'Modifier la Matière' : 'Nouvelle Matière'}
+              <span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span> {editSubject ? 'Modifier la Matière' : 'Nouvelle Matière'}
             </h2>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl"
               disabled={loading}
             >
-              ✕
+              <span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span>
             </button>
           </div>
 
@@ -244,7 +245,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
                 disabled={loading}
               />
               <p className="text-xs text-gray-500 mt-1">
-                💡 L'ordre d'affichage est géré automatiquement
+                <span className="inline-flex items-center justify-center"><Lightbulb className="w-4 h-4" /></span> L'ordre d'affichage est géré automatiquement
               </p>
             </div>
 
@@ -266,7 +267,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({
                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading || !isAuthenticated || !user?.is_admin}
               >
-                {loading ? '💾 Enregistrement...' : (editSubject ? '✅ Modifier' : '➕ Créer')}
+                {loading ? '<span className="inline-flex items-center justify-center"><Save className="w-4 h-4" /></span> Enregistrement...' : (editSubject ? '<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Modifier' : '<span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> Créer')}
               </button>
             </div>
           </form>

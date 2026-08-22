@@ -4,6 +4,7 @@ import { api } from '../lib/api';
 import Header from '../components/Header';
 import { useTranslation } from 'react-i18next';
 import '../styles/SessionActivePage.css';
+import { AlertTriangle, Check } from 'lucide-react';
 
 const SessionActivePage: React.FC = () => {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ const SessionActivePage: React.FC = () => {
         
         if (response.sessionValid) {
           // Session is valid again, redirect to login
-          console.log('✅ Session is now free, redirecting to login');
+          console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Session is now free, redirecting to login');
           navigate('/login', { 
             state: { message: 'Vous pouvez maintenant vous reconnecter.' }
           });
@@ -39,7 +40,7 @@ const SessionActivePage: React.FC = () => {
           setCooldownMinutes(response.cooldownMinutes);
         }
       } catch (error) {
-        console.log('⚠️ Could not check session status:', error);
+        console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> Could not check session status:', error);
       }
     };
 

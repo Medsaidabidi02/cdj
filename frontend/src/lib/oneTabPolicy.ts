@@ -1,3 +1,4 @@
+import { Lock, AlertTriangle } from 'lucide-react';
 /**
  * One-Tab Policy Implementation
  * Shows a message when multiple tabs are open instead of logging out
@@ -23,7 +24,7 @@ export function initOneTabPolicy(onInactive?: () => void): void {
 
   currentTabId = generateTabId();
   
-  console.log(`🔒 One-tab policy initialized for tab ${currentTabId.substring(0, 8)}`);
+  console.log(`<Lock className="w-6 h-6 inline-block" /> One-tab policy initialized for tab ${currentTabId.substring(0, 8)}`);
 
   // Check if another tab is already active
   checkAndClaimActiveTab();
@@ -75,7 +76,7 @@ function checkAndClaimActiveTab(): void {
       
       // If another tab is actively sending heartbeats, this tab is inactive
       if (timeSinceHeartbeat < HEARTBEAT_TIMEOUT) {
-        console.log(`⚠️ Another tab (${existingTabId.substring(0, 8)}) is active. This tab is inactive.`);
+        console.log(`<AlertTriangle className="w-12 h-12 text-amber-500" /> Another tab (${existingTabId.substring(0, 8)}) is active. This tab is inactive.`);
         isActiveTab = false;
         showInactiveTabOverlay();
         return;
@@ -124,7 +125,7 @@ function startHeartbeat(): void {
     const activeTabId = localStorage.getItem(TAB_ID_KEY);
     
     if (activeTabId !== currentTabId) {
-      console.warn(`⚠️ Another tab (${activeTabId?.substring(0, 8)}) is now active. This tab is inactive.`);
+      console.warn(`<AlertTriangle className="w-12 h-12 text-amber-500" /> Another tab (${activeTabId?.substring(0, 8)}) is now active. This tab is inactive.`);
       isActiveTab = false;
       showInactiveTabOverlay();
       return;
@@ -143,7 +144,7 @@ function handleStorageChange(event: StorageEvent): void {
 
   // Another tab claimed to be active
   if (event.key === TAB_ID_KEY && event.newValue && event.newValue !== currentTabId) {
-    console.warn(`⚠️ Tab ${event.newValue.substring(0, 8)} claimed active status. This tab is now inactive.`);
+    console.warn(`<AlertTriangle className="w-12 h-12 text-amber-500" /> Tab ${event.newValue.substring(0, 8)} claimed active status. This tab is now inactive.`);
     isActiveTab = false;
     showInactiveTabOverlay();
     return;
@@ -160,7 +161,7 @@ function handleStorageChange(event: StorageEvent): void {
         
         if (activeTabId === heartbeat.tabId && activeTabId !== currentTabId) {
           // Another tab is correctly marked as active
-          console.warn(`⚠️ Tab ${heartbeat.tabId.substring(0, 8)} is the active tab. This tab is inactive.`);
+          console.warn(`<AlertTriangle className="w-12 h-12 text-amber-500" /> Tab ${heartbeat.tabId.substring(0, 8)} is the active tab. This tab is inactive.`);
           isActiveTab = false;
           showInactiveTabOverlay();
         }
@@ -202,7 +203,7 @@ function showInactiveTabOverlay(): void {
     font-size: 72px;
     margin-bottom: 24px;
   `;
-  icon.textContent = '⚠️';
+  icon.textContent = '<AlertTriangle className="w-12 h-12 text-amber-500" />';
 
   const message = document.createElement('div');
   message.style.cssText = `

@@ -5,6 +5,7 @@ import { blogService, BlogPost } from '../lib/blog';
 import { resolveMediaUrl } from '../lib/media';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { PenTool, Calendar, FileText } from 'lucide-react';
 import Loading from '../components/Loading';
 
 const DEFAULT_BLOG_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMyMmM1NWUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxNmEzNGEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjQwMCIgeT0iMzAwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMzQiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LXdlaWdodD0iNzAwIj7wn5OSKSBBY3R1YWxpdMOpcyBKdXJpZGlxdWVzPC90ZXh0Pjwvc3ZnPg==';
@@ -73,7 +74,7 @@ const BlogPage: React.FC = () => {
       <section className="relative pt-32 pb-16 px-4 z-10" aria-label={t('blog.hero_section', 'Blog')}>
         <div className={`max-w-4xl mx-auto text-center transition-all duration-700 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-100 text-teal-700 font-semibold mb-6 shadow-sm">
-            <span>✍️</span>
+            <span><PenTool className="w-4 h-4" /></span>
             <span>{t('blog.hero_badge', 'News & Legal Advice')}</span>
           </div>
 
@@ -98,7 +99,7 @@ const BlogPage: React.FC = () => {
 
         {blogs.length === 0 && !error ? (
           <div className="bg-white rounded-3xl border border-slate-100 p-16 text-center max-w-2xl mx-auto shadow-sm">
-            <div className="text-6xl mb-6">📝</div>
+            <div className="flex justify-center mb-6"><FileText className="w-16 h-16 text-slate-400" /></div>
             <p className="text-xl font-medium text-slate-700">{t('blog.empty_text', 'Our articles are coming soon! Check back later for legal content.')}</p>
           </div>
         ) : (
@@ -137,11 +138,11 @@ const BlogPage: React.FC = () => {
                   <div className="p-6 flex flex-col flex-grow">
                     <div className={`flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500 mb-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
                       <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md">
-                        🗓 {formatDate(blog.created_at)}
+                        <Calendar className="w-3 h-3" /> {formatDate(blog.created_at)}
                       </span>
                       {blog.author_name && (
                         <span className="flex items-center gap-1.5 text-teal-700 bg-teal-50 px-2 py-1 rounded-md">
-                          ✍️ {blog.author_name}
+                          <PenTool className="w-3 h-3" /> {blog.author_name}
                         </span>
                       )}
                     </div>

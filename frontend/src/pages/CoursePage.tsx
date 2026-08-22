@@ -7,6 +7,8 @@ import ProfessionalVideoPlayer from '../components/ProfessionalVideoPlayer';
 import { useAuth } from '../lib/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Spinner } from '../components/ui/Spinner';
+import { Lock, AlertTriangle, BookOpen, PlaySquare, User, Play, Check, School } from 'lucide-react';
 
 interface Course {
   id: number;
@@ -340,10 +342,7 @@ const CoursePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center font-sans">
         <Header />
-        <svg className="animate-spin h-10 w-10 text-teal-600 mb-4" viewBox="0 0 24 24" fill="none">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
+        <Spinner />
         <p className="text-slate-600 font-medium">{t('course.loading', 'Loading course...')}</p>
       </div>
     );
@@ -355,7 +354,7 @@ const CoursePage: React.FC = () => {
         <Header />
         <div className="flex-1 flex items-center justify-center pt-24 px-4">
           <div className="bg-white border border-red-100 shadow-soft p-10 rounded-2xl text-center max-w-lg">
-            <div className="text-5xl mb-4">⚠️</div>
+            <div className="text-5xl mb-4"><AlertTriangle className="w-12 h-12 text-amber-500" /></div>
             <h2 className="text-2xl font-bold text-slate-800 mb-2">{t('course.error_title', 'Error loading course')}</h2>
             <p className="text-slate-600 mb-6">{error || t('course.not_found', 'Course not found')}</p>
             <button onClick={() => navigate('/courses')} className="btn-secondary">
@@ -377,7 +376,7 @@ const CoursePage: React.FC = () => {
               {course.cover_image ? (
                 <img src={course.cover_image} alt={course.title} className="w-full h-full object-cover" />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50">📚</div>
+                <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50"><BookOpen className="w-12 h-12 text-slate-400" /></div>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
               <div className="absolute bottom-6 left-6 right-6">
@@ -392,7 +391,7 @@ const CoursePage: React.FC = () => {
               <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">{course.description}</p>
               
               <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 sm:p-8 max-w-lg mx-auto">
-                <div className="text-4xl mb-4">🔒</div>
+                <div className="text-4xl mb-4"><Lock className="w-6 h-6 inline-block" /></div>
                 {isAuthenticated ? (
                   <>
                     <p className="text-slate-700 font-medium mb-6">
@@ -442,7 +441,7 @@ const CoursePage: React.FC = () => {
               />
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white/50 bg-slate-900">
-                <span className="text-6xl mb-4">🎬</span>
+                <span className="text-6xl mb-4"><PlaySquare className="w-6 h-6 inline-block" /></span>
                 <p className="text-lg font-medium">{t('course.select_lesson', 'Select a lesson from the sidebar to start watching')}</p>
               </div>
             )}
@@ -461,7 +460,7 @@ const CoursePage: React.FC = () => {
                 )}
                 {currentVideo.professor_name && (
                   <span className="flex items-center gap-1.5">
-                    <span className="text-lg">👨‍🏫</span> {currentVideo.professor_name}
+                    <span className="text-lg"><span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span>‍<span className="inline-flex items-center justify-center"><School className="w-4 h-4" /></span></span> {currentVideo.professor_name}
                   </span>
                 )}
               </div>
@@ -480,7 +479,7 @@ const CoursePage: React.FC = () => {
                 {course.professors.map((professor, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center text-xl shadow-sm border border-teal-100">
-                      👨‍🏫
+                      <span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span>‍<span className="inline-flex items-center justify-center"><School className="w-4 h-4" /></span>
                     </div>
                     <div>
                       <p className="font-semibold text-slate-800 text-sm">{professor}</p>
@@ -534,7 +533,7 @@ const CoursePage: React.FC = () => {
                               <img src={video.thumbnail_url} alt={video.title} className="w-full h-full object-cover" />
                             ) : (
                               <div className="absolute inset-0 flex items-center justify-center bg-slate-800 text-white font-medium">
-                                {hasAccess ? '▶' : '🔒'}
+                                {hasAccess ?  <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> : '<Lock className="w-6 h-6 inline-block" />'}
                               </div>
                             )}
                             
@@ -548,7 +547,7 @@ const CoursePage: React.FC = () => {
                             )}
                             {isCompleted && (
                               <div className="absolute top-1.5 left-1.5 w-5 h-5 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs shadow-sm">
-                                ✓
+                                <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span>
                               </div>
                             )}
                           </div>
@@ -560,7 +559,7 @@ const CoursePage: React.FC = () => {
                             
                             <div className="flex items-center justify-between mt-2 text-xs font-medium">
                               <span className="text-slate-500">{formatDuration(video.duration)}</span>
-                              {!hasAccess && <span className="text-slate-400">🔒 Locked</span>}
+                              {!hasAccess && <span className="text-slate-400"><Lock className="w-6 h-6 inline-block" /> Locked</span>}
                             </div>
                             
                             {/* Progress bar line */}

@@ -1,4 +1,5 @@
 import { api } from './api';
+import { AlertTriangle } from 'lucide-react';
 
 // Session ping interval in milliseconds (5 minutes)
 const PING_INTERVAL = 5 * 60 * 1000;
@@ -12,7 +13,7 @@ let isRunning = false;
  */
 export function startSessionHealthCheck(): void {
   if (isRunning) {
-    console.log('⚠️ Session health check already running');
+    console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> Session health check already running');
     return;
   }
 
@@ -50,7 +51,7 @@ async function sendPing(): Promise<void> {
     await api.post('/auth/session/ping', {});
     console.log('💓 Session ping successful');
   } catch (error: any) {
-    console.warn('⚠️ Session ping failed:', error.message);
+    console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Session ping failed:', error.message);
     
     // If ping fails due to auth error, session might be invalid
     // The API interceptor will handle this and trigger logout

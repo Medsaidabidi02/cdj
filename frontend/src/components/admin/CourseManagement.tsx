@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api, getErrorMessage } from '../../lib/api';
 import CourseForm from './CourseForm';
 import SubjectForm from './SubjectForm';
+import { AlertTriangle, BookOpen, User, BarChart, Edit, Target, School, Trash, X, Check, Video, Eye, Folder, Calendar, Plus } from 'lucide-react';
 
 interface Course {
   id: number;
@@ -44,7 +45,7 @@ const CourseManagement: React.FC = () => {
   const [showSubjectForm, setShowSubjectForm] = useState(false);
   const [editingSubject, setEditingSubject] = useState<Subject | null>(null);
 
-  console.log('📚 CLEAN Course Management - NO MOCK DATA - Azizkh07 at 2025-08-20 12:57:15');
+  console.log('<BookOpen className="w-12 h-12 text-slate-400" /> CLEAN Course Management - NO MOCK DATA - Azizkh07 at 2025-08-20 12:57:15');
 
   // Load real data only
   useEffect(() => {
@@ -62,10 +63,10 @@ const CourseManagement: React.FC = () => {
     try {
       setLoading(true);
       setError('');
-      console.log('📚 Loading REAL courses from database for Azizkh07...');
+      console.log('<BookOpen className="w-12 h-12 text-slate-400" /> Loading REAL courses from database for Azizkh07...');
       
       const response = await api.get<Course[]>('/api/courses');
-      console.log('📊 Real course response from database:', response);
+      console.log('<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Real course response from database:', response);
       
       // Handle response - expecting array directly
       let courseData: Course[] = [];
@@ -73,19 +74,19 @@ const CourseManagement: React.FC = () => {
       if (Array.isArray(response)) {
         courseData = response;
       } else {
-        console.error('❌ Expected array of courses but got:', typeof response, response);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Expected array of courses but got:', typeof response, response);
         throw new Error('Invalid response format from server');
       }
       
       setCourses(courseData);
-      console.log(`✅ Loaded ${courseData.length} REAL courses from database for Azizkh07`);
+      console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Loaded ${courseData.length} REAL courses from database for Azizkh07`);
       
       if (courseData.length === 0) {
         setError('No courses found in database. Database appears to be empty.');
       }
       
     } catch (error: any) {
-      console.error('❌ Error loading REAL courses for Azizkh07:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error loading REAL courses for Azizkh07:', error);
       const errorMessage = getErrorMessage(error);
       setError(`Failed to load courses from database: ${errorMessage}`);
       setCourses([]); // NO MOCK FALLBACK
@@ -98,10 +99,10 @@ const CourseManagement: React.FC = () => {
   const loadRealSubjects = async (courseId: number) => {
     try {
       setError('');
-      console.log(`📖 Loading REAL subjects for course ${courseId} from database for Azizkh07...`);
+      console.log(`<span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span> Loading REAL subjects for course ${courseId} from database for Azizkh07...`);
       
       const response = await api.get<Subject[]>(`/api/subjects/course/${courseId}`);
-      console.log('📊 Real subjects response from database:', response);
+      console.log('<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Real subjects response from database:', response);
       
       // Handle response - expecting array directly
       let subjectData: Subject[] = [];
@@ -109,15 +110,15 @@ const CourseManagement: React.FC = () => {
       if (Array.isArray(response)) {
         subjectData = response;
       } else {
-        console.error('❌ Expected array of subjects but got:', typeof response, response);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Expected array of subjects but got:', typeof response, response);
         subjectData = [];
       }
       
       setSubjects(subjectData);
-      console.log(`✅ Loaded ${subjectData.length} REAL subjects for course ${courseId} from database for Azizkh07`);
+      console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Loaded ${subjectData.length} REAL subjects for course ${courseId} from database for Azizkh07`);
       
     } catch (error: any) {
-      console.error('❌ Error loading REAL subjects for Azizkh07:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error loading REAL subjects for Azizkh07:', error);
       const errorMessage = getErrorMessage(error);
       setError(`Failed to load subjects from database: ${errorMessage}`);
       setSubjects([]); // NO MOCK FALLBACK
@@ -131,19 +132,19 @@ const CourseManagement: React.FC = () => {
   };
 
   const handleCreateCourse = () => {
-    console.log('🎯 Create course button clicked for Azizkh07');
+    console.log('<span className="inline-flex items-center justify-center"><Target className="w-4 h-4" /></span> Create course button clicked for Azizkh07');
     setEditingCourse(null);
     setShowCourseForm(true);
   };
 
   const handleEditCourse = (course: Course) => {
-    console.log('✏️ Edit course button clicked for Azizkh07:', course.title);
+    console.log('<span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span> Edit course button clicked for Azizkh07:', course.title);
     setEditingCourse(course);
     setShowCourseForm(true);
   };
 
   const handleCourseFormSuccess = (course: Course) => {
-    console.log('✅ Course form success - reloading REAL data from database:', course);
+    console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Course form success - reloading REAL data from database:', course);
     setShowCourseForm(false);
     setEditingCourse(null);
     // ALWAYS reload from database - NO LOCAL STATE UPDATES
@@ -156,9 +157,9 @@ const CourseManagement: React.FC = () => {
     }
 
     try {
-      console.log(`🗑️ Deleting REAL course ${course.id} from database for Azizkh07...`);
+      console.log(`<span className="inline-flex items-center justify-center"><Trash className="w-4 h-4" /></span> Deleting REAL course ${course.id} from database for Azizkh07...`);
       const response = await api.delete(`/api/courses/${course.id}`);
-      console.log('✅ Course deleted successfully from database:', response);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Course deleted successfully from database:', response);
       
       // ALWAYS reload from database - NO LOCAL STATE UPDATES
       await loadRealCourses();
@@ -170,26 +171,26 @@ const CourseManagement: React.FC = () => {
       }
       
     } catch (error) {
-      console.error('❌ Error deleting REAL course for Azizkh07:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error deleting REAL course for Azizkh07:', error);
       setError(`Failed to delete course from database: ${getErrorMessage(error)}`);
     }
   };
 
   // Subject handlers - REAL DATABASE OPERATIONS ONLY
   const handleCreateSubject = () => {
-    console.log('🎯 Create subject button clicked for Azizkh07');
+    console.log('<span className="inline-flex items-center justify-center"><Target className="w-4 h-4" /></span> Create subject button clicked for Azizkh07');
     setEditingSubject(null);
     setShowSubjectForm(true);
   };
 
   const handleEditSubject = (subject: Subject) => {
-    console.log('✏️ Edit subject button clicked for Azizkh07:', subject.title);
+    console.log('<span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span> Edit subject button clicked for Azizkh07:', subject.title);
     setEditingSubject(subject);
     setShowSubjectForm(true);
   };
 
   const handleSubjectFormSuccess = (subject: Subject) => {
-    console.log('✅ Subject form success - reloading REAL data from database:', subject);
+    console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Subject form success - reloading REAL data from database:', subject);
     setShowSubjectForm(false);
     setEditingSubject(null);
     
@@ -205,9 +206,9 @@ const CourseManagement: React.FC = () => {
     }
 
     try {
-      console.log(`🗑️ Deleting REAL subject ${subject.id} from database for Azizkh07...`);
+      console.log(`<span className="inline-flex items-center justify-center"><Trash className="w-4 h-4" /></span> Deleting REAL subject ${subject.id} from database for Azizkh07...`);
       const response = await api.delete(`/api/subjects/${subject.id}`);
-      console.log('✅ Subject deleted successfully from database:', response);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Subject deleted successfully from database:', response);
       
       // ALWAYS reload from database - NO LOCAL STATE UPDATES
       if (selectedCourse) {
@@ -215,7 +216,7 @@ const CourseManagement: React.FC = () => {
       }
       
     } catch (error) {
-      console.error('❌ Error deleting REAL subject for Azizkh07:', error);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error deleting REAL subject for Azizkh07:', error);
       setError(`Failed to delete subject from database: ${getErrorMessage(error)}`);
     }
   };
@@ -238,11 +239,11 @@ const CourseManagement: React.FC = () => {
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">📚 Course & Subject Management</h2>
+            <h2 className="text-2xl font-bold text-gray-900"><BookOpen className="w-12 h-12 text-slate-400" /> Course & Subject Management</h2>
          
             {error && (
               <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded">
-                <p className="text-xs text-red-600">⚠️ {error}</p>
+                <p className="text-xs text-red-600"><AlertTriangle className="w-12 h-12 text-amber-500" /> {error}</p>
               </div>
             )}
           </div>
@@ -255,7 +256,7 @@ const CourseManagement: React.FC = () => {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              📚 Courses ({courses.length})
+              <BookOpen className="w-12 h-12 text-slate-400" /> Courses ({courses.length})
             </button>
            
           </div>
@@ -267,20 +268,20 @@ const CourseManagement: React.FC = () => {
         <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">📚 Courses List</h3>
+              <h3 className="text-lg font-bold text-gray-900"><BookOpen className="w-12 h-12 text-slate-400" /> Courses List</h3>
              
             </div>
             <button
               onClick={handleCreateCourse}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              ➕ New Course
+              <span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> New Course
             </button>
           </div>
 
           {courses.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">📚</div>
+              <div className="text-6xl mb-4"><BookOpen className="w-12 h-12 text-slate-400" /></div>
               <p className="text-gray-600 mb-2">No courses found in database</p>
               <p className="text-xs text-gray-500 mb-4">
                 {error ? 'Database connection error' : 'Database is empty'}
@@ -301,7 +302,7 @@ const CourseManagement: React.FC = () => {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-2xl">📚</span>
+                      <span className="text-2xl"><BookOpen className="w-12 h-12 text-slate-400" /></span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <span className={`px-2 py-1 text-xs rounded-full ${
@@ -321,12 +322,12 @@ const CourseManagement: React.FC = () => {
                     {course.description || 'No description available'}
                   </p>
                   {course.category && (
-                    <p className="text-xs text-blue-600 mb-4">📂 {course.category}</p>
+                    <p className="text-xs text-blue-600 mb-4"><span className="inline-flex items-center justify-center"><Folder className="w-4 h-4" /></span> {course.category}</p>
                   )}
                   
                   <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                    <span>📖 {course.subject_count || 0} subjects</span>
-                    <span>🎥 {course.video_count || 0} videos</span>
+                    <span><span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span> {course.subject_count || 0} subjects</span>
+                    <span><span className="inline-flex items-center justify-center"><Video className="w-4 h-4" /></span> {course.video_count || 0} videos</span>
                     <span>⏰ {course.total_hours || 0}h</span>
                   </div>
                   
@@ -335,20 +336,20 @@ const CourseManagement: React.FC = () => {
                       onClick={() => handleCourseSelect(course)}
                       className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                     >
-                      👁️ View Subjects
+                      <span className="inline-flex items-center justify-center"><Eye className="w-4 h-4" /></span> View Subjects
                     </button>
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => handleEditCourse(course)}
                         className="text-green-600 hover:text-green-800 text-sm"
                       >
-                        ✏️ Edit
+                        <span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span> Edit
                       </button>
                       <button
                         onClick={() => handleDeleteCourse(course)}
                         className="text-red-600 hover:text-red-800 text-sm"
                       >
-                        🗑️ Delete
+                        <span className="inline-flex items-center justify-center"><Trash className="w-4 h-4" /></span> Delete
                       </button>
                     </div>
                   </div>
@@ -365,7 +366,7 @@ const CourseManagement: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-lg font-bold text-gray-900">
-                📖 Subjects in: {selectedCourse.title}
+                <span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span> Subjects in: {selectedCourse.title}
               </h3>
               <p className="text-sm text-gray-600">
                 Manage subjects for this course from real database
@@ -382,14 +383,14 @@ const CourseManagement: React.FC = () => {
                 onClick={handleCreateSubject}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
-                ➕ New Subject
+                <span className="inline-flex items-center justify-center"><Plus className="w-4 h-4" /></span> New Subject
               </button>
             </div>
           </div>
 
           {subjects.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-6xl mb-4">📖</div>
+              <div className="text-6xl mb-4"><span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span></div>
               <p className="text-gray-600 mb-4">No subjects in this course</p>
               <button
                 onClick={handleCreateSubject}
@@ -408,7 +409,7 @@ const CourseManagement: React.FC = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
-                        <span className="text-2xl">📖</span>
+                        <span className="text-2xl"><span className="inline-flex items-center justify-center"><BookOpen className="w-4 h-4" /></span></span>
                         <h4 className="font-semibold text-gray-900">{subject.title}</h4>
                         <span className="text-sm text-gray-500">#{subject.order_index}</span>
                         <span className={`px-2 py-1 text-xs rounded-full ${
@@ -421,10 +422,10 @@ const CourseManagement: React.FC = () => {
                       </div>
                       
                       <div className="flex items-center space-x-6 text-sm text-gray-600">
-                        <span>👨‍🏫 {subject.professor_name}</span>
+                        <span><span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span>‍<span className="inline-flex items-center justify-center"><School className="w-4 h-4" /></span> {subject.professor_name}</span>
                         <span>⏰ {subject.hours}h</span>
-                        <span>🎥 {subject.video_count || 0} videos</span>
-                        <span>📅 {new Date(subject.created_at).toLocaleDateString()}</span>
+                        <span><span className="inline-flex items-center justify-center"><Video className="w-4 h-4" /></span> {subject.video_count || 0} videos</span>
+                        <span><span className="inline-flex items-center justify-center"><Calendar className="w-4 h-4" /></span> {new Date(subject.created_at).toLocaleDateString()}</span>
                       </div>
                       
                       {subject.description && (
@@ -437,13 +438,13 @@ const CourseManagement: React.FC = () => {
                         className="text-blue-600 hover:text-blue-800 text-sm"
                         onClick={() => handleEditSubject(subject)}
                       >
-                        ✏️ Edit
+                        <span className="inline-flex items-center justify-center"><Edit className="w-4 h-4" /></span> Edit
                       </button>
                       <button 
                         className="text-red-600 hover:text-red-800 text-sm"
                         onClick={() => handleDeleteSubject(subject)}
                       >
-                        🗑️ Delete
+                        <span className="inline-flex items-center justify-center"><Trash className="w-4 h-4" /></span> Delete
                       </button>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import { authService, User as AuthUser } from './auth';
 import { apiUtils, getErrorMessage } from './api';
+import { Check } from 'lucide-react';
 
 type User = AuthUser;
 
@@ -132,7 +133,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      // ✅ NEW: Call backend logout endpoint
+      // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> NEW: Call backend logout endpoint
       await authService.logout();
       
       apiUtils.removeAuthToken();

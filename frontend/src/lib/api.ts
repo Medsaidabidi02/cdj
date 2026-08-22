@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 // Fixed API client for the frontend - Enhanced error handling and debugging
 // - Automatically extracts data from {success: true, data: [...]} responses
 // - Handles JSON vs FormData bodies
@@ -135,11 +136,11 @@ class ApiClient {
         if (headers['Authorization']) {
           console.log('🔐 Request includes Authorization header (masked):', `Bearer ${this.maskToken(String(headers['Authorization']).replace(/^Bearer\s+/, ''))}`);
         } else {
-          console.log('⚠️ Request does NOT include Authorization header');
+          console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> Request does NOT include Authorization header');
         }
       }
     } catch (e) {
-      console.warn('⚠️ Could not read auth token from localStorage', e);
+      console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Could not read auth token from localStorage', e);
     }
 
     // If FormData, ensure we don't send Content-Type header
@@ -242,7 +243,7 @@ class ApiClient {
         }
       } catch (parseErr) {
         // If it's not JSON or parsing failed, continue normally
-        console.log('⚠️ Interceptor parse error (ignoring):', parseErr);
+        console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> Interceptor parse error (ignoring):', parseErr);
       }
     }
 
@@ -369,7 +370,7 @@ class ApiClient {
           }
         }
       } catch (e) {
-        console.warn('⚠️ Error reading auth token for upload:', e);
+        console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Error reading auth token for upload:', e);
       }
 
       xhr.upload.onprogress = (ev) => {

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { profileApi, getAvatarUrl } from '../lib/api';
+import { Sparkles, BookOpen, Scale } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const HomePage: React.FC = () => {
             {/* Text Content */}
             <div className={`space-y-8 transition-all duration-1000 transform ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-soft border border-slate-100 text-sm font-medium text-teal-700">
-                <span>{t('hero.badge_icon', '⚖️')}</span>
+                <span>{t('hero.badge_icon', '<Scale className="w-6 h-6 inline-block" />')}</span>
                 <span>{t('hero.badge_text', "L'éducation Juridique Premium")}</span>
               </div>
 
@@ -138,13 +139,13 @@ const HomePage: React.FC = () => {
 
                 {/* Floating Elements */}
                 <div className="absolute top-1/4 -right-4 w-16 h-16 bg-white rounded-2xl shadow-glass flex items-center justify-center text-3xl transform rotate-12 animate-float">
-                  ⚖️
+                  <Scale className="w-6 h-6 inline-block" />
                 </div>
                 <div className="absolute bottom-1/4 -left-4 w-16 h-16 bg-white rounded-2xl shadow-glass flex items-center justify-center text-3xl transform -rotate-6 animate-float-slow">
-                  📚
+                  <BookOpen className="w-12 h-12 text-slate-400" />
                 </div>
                 <div className="absolute -top-4 left-1/4 w-12 h-12 bg-white rounded-full shadow-glass flex items-center justify-center text-2xl animate-pulse">
-                  ✨
+                  <Sparkles className="w-6 h-6 inline-block" />
                 </div>
               </div>
             </div>

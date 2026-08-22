@@ -4,6 +4,8 @@ import { useAuth } from '../lib/AuthContext';
 import { api, getErrorMessage } from '../lib/api';
 import Header from '../components/Header';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from '../components/ui/Spinner';
+import { AlertTriangle, Smartphone, Check } from 'lucide-react';
 
 const ANIMATION_DELAY_MS = 300;
 const SUCCESS_REDIRECT_DELAY_MS = 2000;
@@ -80,10 +82,7 @@ const PhoneVerificationPage: React.FC = () => {
       <div className="min-h-screen bg-slate-50 relative flex flex-col font-sans">
         <Header />
         <div className="flex-1 flex items-center justify-center">
-          <svg className="animate-spin h-12 w-12 text-teal-600" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
+          <Spinner />
         </div>
       </div>
     );
@@ -103,7 +102,7 @@ const PhoneVerificationPage: React.FC = () => {
             
             {success ? (
               <div className="text-center py-8">
-                <div className="text-6xl mb-6">✅</div>
+                <div className="text-6xl mb-6"><span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span></div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-4">
                   {t('phone_verification.success_title', 'Phone Number Updated!')}
                 </h2>
@@ -111,16 +110,13 @@ const PhoneVerificationPage: React.FC = () => {
                   {t('phone_verification.success_message', 'Your phone number has been saved successfully. Redirecting...')}
                 </p>
                 <div className="flex justify-center">
-                  <svg className="animate-spin h-8 w-8 text-teal-600" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  <Spinner />
                 </div>
               </div>
             ) : (
               <>
                 <div className="text-center mb-10">
-                  <span className="inline-block p-3 rounded-full bg-teal-50 text-teal-600 mb-4 text-3xl">📱</span>
+                  <span className="inline-block p-3 rounded-full bg-teal-50 text-teal-600 mb-4 text-3xl"><span className="inline-flex items-center justify-center"><Smartphone className="w-4 h-4" /></span></span>
                   <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
                     {t('phone_verification.title_line1', 'Add Your')} <span className="text-teal-600">{t('phone_verification.title_line2', 'Phone Number')}</span>
                   </h1>
@@ -131,7 +127,7 @@ const PhoneVerificationPage: React.FC = () => {
 
                 {error && (
                   <div className="mb-6 p-4 rounded-xl bg-orange-50 border border-orange-200 text-orange-800 text-sm font-medium flex items-start gap-3 animate-shake">
-                    <span className="text-lg">⚠️</span>
+                    <span className="text-lg"><AlertTriangle className="w-12 h-12 text-amber-500" /></span>
                     <span>{error}</span>
                   </div>
                 )}
@@ -184,10 +180,7 @@ const PhoneVerificationPage: React.FC = () => {
                     >
                       {loading ? (
                         <span className="flex items-center gap-2">
-                          <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
+                          <Spinner />
                           {t('phone_verification.saving', 'Saving...')}
                         </span>
                       ) : (

@@ -9,6 +9,14 @@ import { useAuth } from '../lib/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+import { Skeleton } from '../components/ui/Skeleton';
+import { CourseCard } from '../components/education/CourseCard';
+import { EmptyState } from '../components/ui/EmptyState';
+import { BookOpen, AlertTriangle, Check, X } from 'lucide-react';
+
+import { Spinner } from '../components/ui/Spinner';
+
+
 interface Course {
   id: number;
   title: string;
@@ -156,7 +164,7 @@ const MyLearningPage: React.FC = () => {
       setCourses(coursesWithData);
       loadCourseProgress(coursesWithData);
     } catch (err) {
-      console.error('❌ Error loading enrolled courses:', err);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error loading enrolled courses:', err);
       setError(getErrorMessage(err));
     } finally {
       setLoading(false);
@@ -219,15 +227,33 @@ const MyLearningPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans">
+      <div className="min-h-screen bg-slate-50 font-sans">
         <Header />
-        <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-teal-600" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <p className="text-slate-600 font-medium">{t('my_learning.loading', 'Loading your courses...')}</p>
-        </div>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 relative z-10">
+          <div className="mb-12">
+            <Skeleton className="h-10 w-64 mb-4" />
+            <Skeleton className="h-6 w-96" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="flex flex-col bg-white rounded-xl shadow-soft border border-slate-100 overflow-hidden h-[380px]">
+                <Skeleton className="w-full h-48 rounded-none" />
+                <div className="p-6 flex flex-col flex-1 gap-4">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <div className="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-12" />
+                    </div>
+                    <Skeleton className="h-10 w-28 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+        <Footer />
       </div>
     );
   }
@@ -238,7 +264,7 @@ const MyLearningPage: React.FC = () => {
         <Header />
         <div className="pt-32 pb-16 px-4">
           <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-lg mx-auto shadow-sm">
-            <div className="text-4xl mb-4">⚠️</div>
+            <div className="text-4xl mb-4"><AlertTriangle className="w-12 h-12 text-amber-500" /></div>
             <h2 className="text-xl font-bold text-red-800 mb-2">{t('my_learning.error_title', 'Loading error')}</h2>
             <p className="text-red-600">{error}</p>
           </div>
@@ -294,19 +320,19 @@ const MyLearningPage: React.FC = () => {
 
         {/* Courses Grid */}
         {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-2xl mx-auto shadow-sm">
-            <div className="text-5xl mb-6">📚</div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-4">{t('my_learning.no_enrolled_title', 'No enrolled courses')}</h2>
-            <p className="text-slate-500 mb-8">
-              {t('my_learning.no_enrolled_message', 'Visit the Courses page to explore and enroll in courses.')}
-            </p>
-            <button
-              onClick={() => navigate('/courses')}
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              {t('my_learning.browse_courses', 'Browse Courses')}
-            </button>
-          </div>
+          <EmptyState 
+            icon={BookOpen}
+            title={t('my_learning.no_enrolled_title', 'No enrolled courses')}
+            description={t('my_learning.no_enrolled_message', 'Your enrolled courses will appear here. Explore the catalog to start learning.')}
+            action={
+              <button
+                onClick={() => navigate('/courses')}
+                className="btn-primary"
+              >
+                {t('my_learning.browse_courses', 'Browse Courses')}
+              </button>
+            }
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCourses.map((course, index) => {
@@ -329,7 +355,7 @@ const MyLearningPage: React.FC = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-5xl text-white opacity-90 transition-transform duration-700 group-hover:scale-105">
-                        📚
+                        <BookOpen className="w-12 h-12 text-slate-400" />
                       </div>
                     )}
                     
@@ -355,7 +381,7 @@ const MyLearningPage: React.FC = () => {
                       </h3>
                       {progress === 100 && (
                         <span className="flex-shrink-0 bg-teal-100 text-teal-700 text-xs font-bold px-2 py-1 rounded-md">
-                          ✓ Done
+                          <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Done
                         </span>
                       )}
                     </div>

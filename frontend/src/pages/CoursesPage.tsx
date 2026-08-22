@@ -8,6 +8,10 @@ import ProfessionalVideoPlayer from '../components/ProfessionalVideoPlayer';
 import { useAuth } from '../lib/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Spinner } from '../components/ui/Spinner';
+import { Skeleton } from '../components/ui/Skeleton';
+import { Lock, AlertTriangle, BookOpen } from 'lucide-react';
+import { EmptyState } from '../components/ui/EmptyState';
 
 interface Course {
   id: number;
@@ -289,14 +293,33 @@ const CoursesPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-teal-600" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <p className="text-slate-600 font-medium">{t('courses.loading', 'Loading courses...')}</p>
-        </div>
+      <div className="min-h-screen bg-slate-50 font-sans">
+        <Header />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 relative z-10">
+          <div className="mb-12">
+            <Skeleton className="h-10 w-64 mb-4" />
+            <Skeleton className="h-6 w-96" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="flex flex-col bg-white rounded-xl shadow-soft border border-slate-100 overflow-hidden h-[380px]">
+                <Skeleton className="w-full h-48 rounded-none" />
+                <div className="p-6 flex flex-col flex-1 gap-4">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <div className="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-12" />
+                    </div>
+                    <Skeleton className="h-10 w-28 rounded-lg" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+        <Footer />
       </div>
     );
   }
@@ -307,7 +330,7 @@ const CoursesPage: React.FC = () => {
         <Header />
         <div className="max-w-7xl mx-auto px-4 pt-32 pb-16">
           <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-lg mx-auto">
-            <div className="text-4xl mb-4">⚠️</div>
+            <div className="text-4xl mb-4"><AlertTriangle className="w-12 h-12 text-amber-500" /></div>
             <h2 className="text-xl font-bold text-red-800 mb-2">{t('courses.error_title', 'Loading error')}</h2>
             <p className="text-red-600">{error}</p>
           </div>
@@ -353,16 +376,14 @@ const CoursesPage: React.FC = () => {
 
         {/* Courses Grid */}
         {filteredCourses.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-2xl mx-auto shadow-sm">
-            <div className="text-5xl mb-6">📚</div>
-            <h2 className="text-2xl font-bold text-slate-800 mb-3">{t('courses.no_courses_title', 'No courses available')}</h2>
-            <p className="text-slate-500">
-              {selectedCategory === 'all'
+          <EmptyState 
+            icon={BookOpen}
+            title={t('courses.no_courses_title', 'No courses available')}
+            description={selectedCategory === 'all'
                 ? t('courses.no_courses_message_all', 'Our courses are coming soon. Please check back later.')
                 : t('courses.no_courses_message_category', 'No courses available in the "{{category}}" category.', { category: selectedCategory })
-              }
-            </p>
-          </div>
+            }
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCourses.map((course, index) => {
@@ -413,7 +434,7 @@ const CoursesPage: React.FC = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-5xl text-white opacity-90 transition-transform duration-700 group-hover:scale-105">
-                        📚
+                        <BookOpen className="w-12 h-12 text-slate-400" />
                       </div>
                     )}
                     
@@ -428,7 +449,7 @@ const CoursesPage: React.FC = () => {
                         {isCourseEnrolled && isAuthenticated ? (
                           <svg className="w-6 h-6 text-teal-600 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
                         ) : (
-                          <span className="text-xl">🔒</span>
+                          <span className="text-xl"><Lock className="w-6 h-6 inline-block" /></span>
                         )}
                       </div>
                     </div>
@@ -472,7 +493,7 @@ const CoursesPage: React.FC = () => {
                           navigate(`/course/${course.id}`);
                         }}
                       >
-                        {isCourseEnrolled ? t('courses.view_content', 'View content') : t('courses.login_required', 'Login required 🔒')}
+                        {isCourseEnrolled ? t('courses.view_content', 'View content') : t('courses.login_required', 'Login required <Lock className="w-6 h-6 inline-block" />')}
                       </button>
                     </div>
                   </div>

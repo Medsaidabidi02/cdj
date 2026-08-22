@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Hls from 'hls.js';
 import { Video, videoService } from '../lib/videoService';
 import { api } from '../lib/api';
+import { Lock, AlertTriangle, PlaySquare, BarChart, Play, X, Check } from 'lucide-react';
 
 // Preview duration limit for non-authenticated users (in seconds)
 const PREVIEW_LIMIT_SECONDS = 10;
@@ -52,7 +53,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
   const [showControls, setShowControls] = useState(true);
   const [isBuffering, setIsBuffering] = useState(false);
 
-  console.log(`🎬 ProfessionalVideoPlayer props: video=${video.title}, initialTime=${initialTime}, initialResolution=${initialResolution}, isAuthenticated=${isAuthenticated}`);
+  console.log(`<PlaySquare className="w-6 h-6 inline-block" /> ProfessionalVideoPlayer props: video=${video.title}, initialTime=${initialTime}, initialResolution=${initialResolution}, isAuthenticated=${isAuthenticated}`);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
@@ -66,17 +67,17 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
 
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  console.log(`🎬 Professional Video Player initialized for: ${video.title}`);
+  console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Professional Video Player initialized for: ${video.title}`);
 
   // Save video progress to backend
   const saveProgress = useCallback(async (time: number, videoDuration: number, completed: boolean = false) => {
     if (!isAuthenticated || !video.id) {
-      console.log('📊 Progress save skipped - not authenticated or no video ID');
+      console.log('<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Progress save skipped - not authenticated or no video ID');
       return;
     }
     
     try {
-      console.log(`📊 Saving progress: video=${video.id}, time=${time.toFixed(1)}s, duration=${videoDuration.toFixed(1)}s`);
+      console.log(`<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Saving progress: video=${video.id}, time=${time.toFixed(1)}s, duration=${videoDuration.toFixed(1)}s`);
       await api.post('/video-progress', {
         videoId: video.id,
         currentTime: time,
@@ -84,9 +85,9 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
         resolution: currentResolutionLabel !== 'Auto' ? currentResolutionLabel : null,
         completed
       });
-      console.log('📊 Progress saved successfully');
+      console.log('<span className="inline-flex items-center justify-center"><BarChart className="w-4 h-4" /></span> Progress saved successfully');
     } catch (error) {
-      console.warn('❌ Failed to save video progress:', error);
+      console.warn('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Failed to save video progress:', error);
     }
   }, [isAuthenticated, video.id, currentResolutionLabel]);
 
@@ -117,7 +118,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
     };
   }, [isAuthenticated, saveProgress]);
 
-  // ✅ FIXED: Disable right-click context menu
+  // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Disable right-click context menu
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => e.preventDefault();
     const container = containerRef.current;
@@ -126,7 +127,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
       container.addEventListener('contextmenu', handleContextMenu);
       return () => container.removeEventListener('contextmenu', handleContextMenu);
     }
-    // ✅ FIXED: Return statement for all code paths
+    // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Return statement for all code paths
     return undefined;
   }, []);
 
@@ -201,7 +202,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
     if (videoRef.current && isAuthenticated) {
       saveProgress(videoRef.current.currentTime, videoRef.current.duration);
     }
-    console.log('▶️ Video playback started');
+    console.log('<span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Video playback started');
   };
 
   const handlePause = () => {
@@ -235,14 +236,14 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
 
   const handleCanPlay = () => {
     setIsBuffering(false);
-    console.log('✅ Video ready to play - Azizkh07');
+    console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Video ready to play - Azizkh07');
   };
 
   // Control handlers
   const togglePlayPause = useCallback(() => {
     if (videoRef.current) {
       if (!isAuthenticated && currentTime >= PREVIEW_LIMIT_SECONDS) {
-        console.log('🔒 Login required to continue watching');
+        console.log('<Lock className="w-6 h-6 inline-block" /> Login required to continue watching');
         return;
       }
       
@@ -313,7 +314,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
     }
   }, []);
 
-  // ✅ FIXED: Mouse move handlers
+  // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Mouse move handlers
   useEffect(() => {
     const handleMouseMove = () => resetControlsTimeout();
     const handleMouseUp = () => setIsDragging(false);
@@ -327,7 +328,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-    // ✅ FIXED: Return statement for all code paths
+    // <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> FIXED: Return statement for all code paths
     return undefined;
   }, [isDragging, resetControlsTimeout]);
 
@@ -423,11 +424,11 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
     
     const hlsUrl = getVideoUrl(resolution);
     if (!hlsUrl) {
-      console.error('❌ No HLS URL available for resolution:', resolution);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> No HLS URL available for resolution:', resolution);
       return;
     }
     
-    console.log(`🎬 Loading video with ${resolution}p resolution: ${hlsUrl}`);
+    console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Loading video with ${resolution}p resolution: ${hlsUrl}`);
     
     if (Hls.isSupported()) {
       const hls = new Hls({
@@ -445,7 +446,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
       hls.attachMedia(videoElement);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log(`✅ HLS manifest parsed for ${resolution}p`);
+        console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> HLS manifest parsed for ${resolution}p`);
         setIsBuffering(false);
         
         // Restore playback position
@@ -456,13 +457,13 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
         // Resume playback if it was playing
         if (wasPlaying) {
           videoElement.play().catch(err => {
-            console.warn('⚠️ Autoplay prevented:', err);
+            console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Autoplay prevented:', err);
           });
         }
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error('❌ HLS error:', data);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS error:', data);
         setIsBuffering(false);
         if (data.fatal) {
           switch (data.type) {
@@ -516,11 +517,11 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
 
     const hlsUrl = getVideoUrl(startResolution);
     if (!hlsUrl) {
-      console.error('❌ No HLS URL available');
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> No HLS URL available');
       return;
     }
 
-    console.log('🎬 Initializing HLS for ProfessionalVideoPlayer:', hlsUrl);
+    console.log('<PlaySquare className="w-6 h-6 inline-block" /> Initializing HLS for ProfessionalVideoPlayer:', hlsUrl);
 
     // Check if HLS.js is supported
     if (Hls.isSupported()) {
@@ -540,7 +541,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
       hls.attachMedia(videoElement);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log('✅ HLS manifest parsed in ProfessionalVideoPlayer');
+        console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> HLS manifest parsed in ProfessionalVideoPlayer');
         
         setIsBuffering(false);
         
@@ -551,13 +552,13 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
         
         if (autoPlay) {
           videoElement.play().catch(err => {
-            console.warn('⚠️ Autoplay prevented:', err);
+            console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Autoplay prevented:', err);
           });
         }
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error('❌ HLS error in ProfessionalVideoPlayer:', data);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS error in ProfessionalVideoPlayer:', data);
         setIsBuffering(false);
         if (data.fatal) {
           switch (data.type) {
@@ -584,7 +585,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
 
     } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
       // Native HLS support (Safari, iOS)
-      console.log('✅ Using native HLS support in ProfessionalVideoPlayer');
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Using native HLS support in ProfessionalVideoPlayer');
       videoElement.src = hlsUrl;
       
       // Set initial time for native HLS
@@ -592,7 +593,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
         videoElement.currentTime = initialTime;
       }
     } else {
-      console.error('❌ HLS not supported in this browser');
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS not supported in this browser');
     }
 
     // Cleanup
@@ -611,7 +612,7 @@ const ProfessionalVideoPlayer: React.FC<ProfessionalVideoPlayerProps> = ({
     setCurrentResolutionLabel(`${resolution}p`);
     loadVideoWithResolution(resolution, true);
     setShowQualityMenu(false);
-    console.log(`🎬 Quality changed to ${resolution}p`);
+    console.log(`<PlaySquare className="w-6 h-6 inline-block" /> Quality changed to ${resolution}p`);
   }, [loadVideoWithResolution]);
 
   return (

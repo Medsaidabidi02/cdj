@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 export class ApiClient {
   private baseURL: string;
 
@@ -25,7 +26,7 @@ export class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
       console.log('🔐 Adding Authorization header with token:', token.substring(0, 30) + '...');
     } else {
-      console.log('⚠️ No token found in localStorage');
+      console.log('<AlertTriangle className="w-12 h-12 text-amber-500" /> No token found in localStorage');
     }
     
     return headers;

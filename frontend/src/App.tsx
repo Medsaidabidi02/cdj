@@ -1,12 +1,14 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from './lib/AuthContext';
 import { NotificationProvider } from './lib/NotificationContext';
 import { Toaster } from 'react-hot-toast';
+import { AnimatePresence } from 'framer-motion';
 
 // Components
 import Loading from './components/Loading';
+import { PageTransition } from './components/ui/PageTransition';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -103,38 +105,41 @@ const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 function App() {
+  const location = useLocation();
   return (
     <AuthProvider>
       <NotificationProvider>
         <Toaster position="bottom-left" reverseOrder={false} />
-        <Routes>
+        <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/courses" element={<CoursesPage />} />
-        <Route path="/course/:id" element={<CoursePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogDetailPage />} />
-        <Route path="/blog/drafts" element={<DraftsPage />} />
-        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+        <Route path="/courses" element={<PageTransition><CoursesPage /></PageTransition>} />
+        <Route path="/course/:id" element={<PageTransition><CoursePage /></PageTransition>} />
+        <Route path="/blog" element={<PageTransition><BlogPage /></PageTransition>} />
+        <Route path="/blog/:slug" element={<PageTransition><BlogDetailPage /></PageTransition>} />
+        <Route path="/blog/drafts" element={<PageTransition><DraftsPage /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
 
         {/* Guest Routes */}
-        <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
-        <Route path="/signup" element={<GuestRoute><SignupPage /></GuestRoute>} />
+        <Route path="/login" element={<PageTransition><GuestRoute><LoginPage /></GuestRoute></PageTransition>} />
+        <Route path="/signup" element={<PageTransition><GuestRoute><SignupPage /></GuestRoute></PageTransition>} />
 
         {/* Protected Routes */}
-        <Route path="/add-phone" element={<ProtectedRoute><PhoneVerificationPage /></ProtectedRoute>} />
-        <Route path="/my-learning" element={<ProtectedRoute><MyLearningPage /></ProtectedRoute>} />
-        <Route path="/inbox" element={<ProtectedRoute><InboxPage /></ProtectedRoute>} />
-        <Route path="/inbox/:id" element={<ProtectedRoute><InboxDetailPage /></ProtectedRoute>} />
-        <Route path="/inbox/:id/pdf" element={<ProtectedRoute><InboxViewerPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-        <Route path="/live" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
-        <Route path="/live/:sessionId" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
+        <Route path="/add-phone" element={<PageTransition><ProtectedRoute><PhoneVerificationPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/my-learning" element={<PageTransition><ProtectedRoute><MyLearningPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/inbox" element={<PageTransition><ProtectedRoute><InboxPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/inbox/:id" element={<PageTransition><ProtectedRoute><InboxDetailPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/inbox/:id/pdf" element={<PageTransition><ProtectedRoute><InboxViewerPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/profile" element={<PageTransition><ProtectedRoute><ProfilePage /></ProtectedRoute></PageTransition>} />
+        <Route path="/live" element={<PageTransition><ProtectedRoute><LiveSessionPage /></ProtectedRoute></PageTransition>} />
+        <Route path="/live/:sessionId" element={<PageTransition><ProtectedRoute><LiveSessionPage /></ProtectedRoute></PageTransition>} />
 
 
         {/* Admin Routes */}
-        <Route path="/admin/*" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/admin/*" element={<PageTransition><AdminRoute><AdminDashboard /></AdminRoute></PageTransition>} />
       </Routes>
+        </AnimatePresence>
       </NotificationProvider>
     </AuthProvider>
   );

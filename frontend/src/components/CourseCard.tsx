@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Video } from '../lib/videoService';
 import VideoPreview from './VideoPreview';
+import { Lock, User, Play, Target, School } from 'lucide-react';
 
 interface Course {
   id: number;
@@ -41,7 +42,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<number | null>(null);
 
-  console.log(`🎯 CourseCard for ${course.title} - Azizkh07 at 2025-08-20 14:37:59`);
+  console.log(`<span className="inline-flex items-center justify-center"><Target className="w-4 h-4" /></span> CourseCard for ${course.title} - Azizkh07 at 2025-08-20 14:37:59`);
 
   // Get first few videos for preview
   const previewVideos = course.subjects
@@ -126,7 +127,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
                 </div>
                 {!isAuthenticated && (
                   <div className="absolute top-1 right-1 bg-orange-600 text-white text-xs px-1 rounded">
-                    🔒
+                    <Lock className="w-6 h-6 inline-block" />
                   </div>
                 )}
               </div>
@@ -146,7 +147,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             onClick={() => previewVideos.length > 0 && onVideoClick(previewVideos[0])}
             className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors"
           >
-            ▶️ Commencer
+            <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span> Commencer
           </button>
         </div>
 
@@ -166,7 +167,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
                       <div>
                         <h4 className="font-medium text-sm">{subject.title}</h4>
                         <p className="text-xs text-gray-500">
-                          👨‍🏫 {subject.professor_name} • {subject.hours}h • {subject.videos.length} vidéos
+                          <span className="inline-flex items-center justify-center"><User className="w-4 h-4" /></span>‍<span className="inline-flex items-center justify-center"><School className="w-4 h-4" /></span> {subject.professor_name} • {subject.hours}h • {subject.videos.length} vidéos
                         </p>
                       </div>
                       <svg 

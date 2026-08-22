@@ -1,4 +1,5 @@
 import { api } from './api';
+import { AlertTriangle } from 'lucide-react';
 
 // Blog post interface matching backend exactly
 export interface BlogPost {
@@ -66,7 +67,7 @@ export const blogService = {
         return typedResponse.posts;
       }
       
-      console.warn('⚠️ Unexpected blog response format:', response);
+      console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Unexpected blog response format:', response);
       return [];
       
     } catch (error) {
@@ -99,7 +100,7 @@ export const blogService = {
         
         return null;
       } catch (firstError) {
-        console.warn('⚠️ Error with direct slug lookup:', firstError);
+        console.warn('<AlertTriangle className="w-12 h-12 text-amber-500" /> Error with direct slug lookup:', firstError);
         
         // Fallback: Get all posts and find the one with matching slug
         try {

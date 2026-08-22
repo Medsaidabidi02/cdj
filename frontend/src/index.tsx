@@ -6,6 +6,7 @@ import './styles/rtl.css';  // optional: global RTL helpers
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { X, Check } from 'lucide-react';
 
 // Suppress webpack-dev-server SSE errors in development mode
 if (process.env.NODE_ENV === 'development') {
@@ -81,10 +82,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then(registration => {
-        console.log('✅ ServiceWorker registered');
+        console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> ServiceWorker registered');
       })
       .catch(err => {
-        console.error('❌ ServiceWorker registration failed: ', err);
+        console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ServiceWorker registration failed: ', err);
       });
   });
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Hls from 'hls.js';
 import { Video, videoService } from '../lib/videoService';
+import { PlaySquare, X, Check } from 'lucide-react';
 
 interface VideoPreviewProps {
   video: Video;
@@ -23,7 +24,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  console.log(`🎬 VideoPreview for ${video.title} - Azizkh07 at 2025-08-20 14:30:38`);
+  console.log(`<PlaySquare className="w-6 h-6 inline-block" /> VideoPreview for ${video.title} - Azizkh07 at 2025-08-20 14:30:38`);
 
   // Initialize HLS.js for video preview
   useEffect(() => {
@@ -32,7 +33,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
 
     const hlsUrl = videoService.getVideoPlaybackUrl(video);
     if (!hlsUrl) {
-      console.error('❌ No HLS URL available for preview');
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> No HLS URL available for preview');
       return;
     }
 
@@ -49,12 +50,12 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
       hls.attachMedia(videoElement);
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        console.log('✅ HLS manifest parsed for preview');
+        console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> HLS manifest parsed for preview');
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
-          console.error('❌ HLS error in preview:', data);
+          console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> HLS error in preview:', data);
         }
       });
 

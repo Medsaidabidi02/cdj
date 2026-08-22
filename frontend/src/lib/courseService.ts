@@ -1,4 +1,5 @@
 import { api } from './api';
+import { BookOpen } from 'lucide-react';
 
 export interface Subject {
   id?: number;
@@ -60,7 +61,7 @@ class CourseService {
   }
 
   private logAction(action: string, details?: any): void {
-    console.log(`📚 CourseService - ${action} for Azizkh07 at 2025-08-19 20:58:29`, details || '');
+    console.log(`<BookOpen className="w-12 h-12 text-slate-400" /> CourseService - ${action} for Azizkh07 at 2025-08-19 20:58:29`, details || '');
   }
 
   // ========== BASIC COURSE OPERATIONS ==========

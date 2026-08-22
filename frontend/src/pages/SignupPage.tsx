@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authService } from '../lib/auth';
 import Header from '../components/Header';
+import { Spinner } from '../components/ui/Spinner';
+import { FileText, X, Check } from 'lucide-react';
 
 interface SignupFormData {
   name: string;
@@ -131,7 +133,7 @@ const SignupPage: React.FC = () => {
           
           <div className="bg-white rounded-2xl shadow-elegant border border-slate-100 p-8 sm:p-10">
             <div className="text-center mb-8">
-              <span className="inline-block p-3 rounded-full bg-teal-50 text-teal-600 mb-4 text-2xl">📝</span>
+              <span className="inline-block p-3 rounded-full bg-teal-50 text-teal-600 mb-4 text-2xl"><span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span></span>
               <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
                 {t('auth.signup.create_account_line1', 'Create your')} <span className="text-teal-600">{t('auth.signup.create_account_line2', 'account')}</span>
               </h1>
@@ -143,7 +145,7 @@ const SignupPage: React.FC = () => {
             {success ? (
               <div className="text-center space-y-4 py-8">
                 <div className="mx-auto w-16 h-16 bg-teal-100 text-teal-600 flex items-center justify-center rounded-full text-3xl mb-4">
-                  ✓
+                  <span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">{t('auth.signup.success_title', 'Registration Successful!')}</h3>
                 <p className="text-slate-600 px-4">{t('auth.signup.success_message', 'Your account has been created. Please wait for admin approval before logging in.')}</p>
@@ -153,7 +155,7 @@ const SignupPage: React.FC = () => {
               <>
                 {error && (
                   <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium flex items-start gap-3">
-                    <span className="text-lg">❌</span>
+                    <span className="text-lg"><span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span></span>
                     <span>{error}</span>
                   </div>
                 )}
@@ -250,10 +252,7 @@ const SignupPage: React.FC = () => {
                     >
                       {loading ? (
                         <span className="flex items-center gap-2">
-                          <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
+                          <Spinner />
                           {t('auth.signup.creating', 'Creating account...')}
                         </span>
                       ) : (

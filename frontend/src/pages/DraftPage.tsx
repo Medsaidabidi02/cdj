@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../lib/api';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
+import { FileText, X, Check } from 'lucide-react';
 
 interface Draft {
   id: number;
@@ -99,16 +100,16 @@ const DraftsPage: React.FC = () => {
 
       const result = await api.put(`/blog/${editing.id}`, payload);
       if ((result as any).success) {
-        alert('✅ Draft updated');
+        alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Draft updated');
         closeEditor();
         fetchDrafts();
       } else {
         console.error('Update failed', result);
-        alert('❌ Update failed');
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Update failed');
       }
     } catch (err: any) {
       console.error('Error updating draft:', err);
-      alert('❌ Error updating draft. Check console.');
+      alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error updating draft. Check console.');
     }
   };
 
@@ -117,15 +118,15 @@ const DraftsPage: React.FC = () => {
       if (!window.confirm(`Publish "${post.title}"?`)) return;
       const result = await api.put(`/blog/${post.id}`, { published: true });
       if ((result as any).success) {
-        alert('✅ Published');
+        alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Published');
         fetchDrafts();
       } else {
         console.error('Publish failed', result);
-        alert('❌ Publish failed');
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Publish failed');
       }
     } catch (err) {
       console.error('Error publishing:', err);
-      alert('❌ Error publishing. Check console.');
+      alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error publishing. Check console.');
     }
   };
 
@@ -134,15 +135,15 @@ const DraftsPage: React.FC = () => {
       if (!window.confirm(`Delete draft "${post.title}"? This cannot be undone.`)) return;
       const result = await api.delete(`/blog/${post.id}`);
       if ((result as any).success) {
-        alert('✅ Deleted');
+        alert('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Deleted');
         fetchDrafts();
       } else {
         console.error('Delete failed', result);
-        alert('❌ Delete failed');
+        alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Delete failed');
       }
     } catch (err) {
       console.error('Error deleting draft:', err);
-      alert('❌ Error deleting draft. Check console.');
+      alert('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error deleting draft. Check console.');
     }
   };
 
@@ -221,7 +222,7 @@ const DraftsPage: React.FC = () => {
                   // eslint-disable-next-line jsx-a11y/img-redundant-alt
                   <img src={resolveImage(d.cover_image)} alt="cover" className="w-full h-full object-cover" onError={(e: any) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/placeholder-course.png'; }} />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-300">📝</div>
+                  <div className="w-full h-full flex items-center justify-center text-gray-300"><span className="inline-flex items-center justify-center"><FileText className="w-4 h-4" /></span></div>
                 )}
               </div>
 

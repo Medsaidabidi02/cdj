@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api, getErrorMessage } from '../../lib/api';
+import { Mailbox, X } from 'lucide-react';
 
 interface User {
   id: number;
@@ -134,7 +135,7 @@ const InboxManagement: React.FC = () => {
       }
 
       const result: any = await api.upload('/inbox/send', data);
-      console.log('📬 Send result:', result);
+      console.log('<span className="inline-flex items-center justify-center"><Mailbox className="w-4 h-4" /></span> Send result:', result);
 
       // Check for success in various response formats
       // The API returns: { success: true, data: { recipients_count, ... } } or after extraction: { recipients_count, ... }
@@ -423,7 +424,7 @@ const InboxManagement: React.FC = () => {
                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 ml-4"
                     title="Supprimer"
                   >
-                    ✕
+                    <span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span>
                   </button>
                 </div>
               </div>

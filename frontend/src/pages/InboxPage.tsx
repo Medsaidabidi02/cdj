@@ -6,6 +6,9 @@ import { useAuth } from '../lib/AuthContext';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import '../styles/InboxPage.css';
+import { Mailbox, X } from 'lucide-react';
+import { EmptyState } from '../components/ui/EmptyState';
+import { Mail } from 'lucide-react';
 
 interface InboxMessage {
   id: number;
@@ -40,7 +43,7 @@ const InboxPage: React.FC = () => {
       setError(null);
       
       const response: any = await api.get('/inbox');
-      console.log('📬 Inbox response:', response);
+      console.log('<span className="inline-flex items-center justify-center"><Mailbox className="w-4 h-4" /></span> Inbox response:', response);
       
       if (response && response.success && Array.isArray(response.messages)) {
         setMessages(response.messages);
@@ -50,7 +53,7 @@ const InboxPage: React.FC = () => {
         setMessages([]);
       }
     } catch (err: any) {
-      console.error('❌ Error fetching inbox:', err);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error fetching inbox:', err);
       setError(t('inbox.error_loading', 'Failed to load inbox messages'));
     } finally {
       setLoading(false);
@@ -106,9 +109,12 @@ const InboxPage: React.FC = () => {
         )}
 
         {messages.length === 0 && !error ? (
-          <div className="inbox-empty">
-            <h2>{t('inbox.empty_title', 'No messages yet')}</h2>
-            <p>{t('inbox.empty_description', 'Your inbox is empty. New messages will appear here.')}</p>
+          <div className="p-12">
+            <EmptyState 
+              icon={Mail}
+              title={t('inbox.empty_title', 'Nothing here yet')}
+              description={t('inbox.empty_description', 'Your inbox is empty. New messages will appear here.')}
+            />
           </div>
         ) : (
           <div className="inbox-list">

@@ -5,6 +5,7 @@ import { api } from '../lib/api';
 import { useAuth } from '../lib/AuthContext';
 import Loading from '../components/Loading';
 import '../styles/InboxViewerPage.css';
+import { AlertTriangle, Mailbox, Play, X } from 'lucide-react';
 
 // We'll use PDF.js from CDN via script tag
 declare global {
@@ -113,7 +114,7 @@ const InboxViewerPage: React.FC = () => {
       setError(null);
       
       const response: any = await api.get(`/inbox/${id}`);
-      console.log('📬 Message response:', response);
+      console.log('<span className="inline-flex items-center justify-center"><Mailbox className="w-4 h-4" /></span> Message response:', response);
       
       // The API extracts data, so response is the message object directly
       // It could be {id, title, ...} or {success: true, message: {...}}
@@ -133,7 +134,7 @@ const InboxViewerPage: React.FC = () => {
         setError(t('inbox.message_not_found', 'Message not found'));
       }
     } catch (err: any) {
-      console.error('❌ Error fetching message:', err);
+      console.error('<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> Error fetching message:', err);
       setError(t('inbox.error_loading_message', 'Failed to load message'));
     } finally {
       setLoading(false);
@@ -255,7 +256,7 @@ const InboxViewerPage: React.FC = () => {
     return (
       <div className="inbox-viewer-error">
         <div className="error-content">
-          <span className="error-icon">⚠️</span>
+          <span className="error-icon"><AlertTriangle className="w-12 h-12 text-amber-500" /></span>
           <h2>{t('inbox.error', 'Error')}</h2>
           <p>{error}</p>
           <Link to="/inbox" className="back-link">
@@ -305,7 +306,7 @@ const InboxViewerPage: React.FC = () => {
             className="toolbar-btn"
             title={t('inbox.next_page', 'Page suivante')}
           >
-            ▶
+            <span className="inline-flex items-center justify-center"><Play className="w-4 h-4" /></span>
           </button>
         </div>
       </div>

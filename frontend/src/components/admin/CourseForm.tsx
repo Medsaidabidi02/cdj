@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../../lib/api';
+import { AlertTriangle, BookOpen, Upload, X, Check, Wrench, Save } from 'lucide-react';
 
 interface CourseFormData {
   title: string;
@@ -24,7 +25,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
-  console.log(`📚 Simplified Course Form (No Categories) initialized for ${editCourse ? 'editing' : 'creating'} by Azizkh07 at 2025-08-20 00:30:07`);
+  console.log(`<BookOpen className="w-12 h-12 text-slate-400" /> Simplified Course Form (No Categories) initialized for ${editCourse ? 'editing' : 'creating'} by Azizkh07 at 2025-08-20 00:30:07`);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -62,7 +63,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
     setLoading(true);
     setError('');
     
-    console.log(`📤 ${editCourse ? 'Updating' : 'Creating'} course for Azizkh07:`, {
+    console.log(`<span className="inline-flex items-center justify-center"><Upload className="w-4 h-4" /></span> ${editCourse ? 'Updating' : 'Creating'} course for Azizkh07:`, {
       title: formData.title,
       description_length: formData.description.length,
       timestamp: '2025-08-20 00:30:07'
@@ -84,7 +85,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
         result = await api.post('/api/courses', courseData);
       }
 
-      console.log(`✅ Course ${editCourse ? 'updated' : 'created'} successfully:`, {
+      console.log(`<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Course ${editCourse ? 'updated' : 'created'} successfully:`, {
         id: result.id || 'mock',
         title: result.title || formData.title,
         user: 'Azizkh07'
@@ -101,10 +102,10 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
       onClose();
 
     } catch (error: any) {
-      console.error(`❌ ${editCourse ? 'Update' : 'Creation'} error:`, error);
+      console.error(`<span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span> ${editCourse ? 'Update' : 'Creation'} error:`, error);
       
       // For development: simulate success with mock data
-      console.log('🔧 API not ready, using mock success for development');
+      console.log('<span className="inline-flex items-center justify-center"><Wrench className="w-4 h-4" /></span> API not ready, using mock success for development');
       
       const mockResult = {
         id: Math.floor(Math.random() * 1000),
@@ -117,7 +118,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
         video_count: 0
       };
 
-      console.log('✅ Mock course created:', mockResult);
+      console.log('<span className="inline-flex items-center justify-center"><Check className="w-4 h-4" /></span> Mock course created:', mockResult);
       
       // Reset form
       setFormData({
@@ -143,7 +144,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                📚 {editCourse ? 'Modifier le Cours' : 'Nouveau Cours'}
+                <BookOpen className="w-12 h-12 text-slate-400" /> {editCourse ? 'Modifier le Cours' : 'Nouveau Cours'}
               </h2>
               
             </div>
@@ -153,7 +154,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
               disabled={loading}
               type="button"
             >
-              ✕
+              <span className="inline-flex items-center justify-center"><X className="w-4 h-4" /></span>
             </button>
           </div>
 
@@ -161,7 +162,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
               <div className="flex items-center">
-                <span className="mr-2 text-lg">⚠️</span>
+                <span className="mr-2 text-lg"><AlertTriangle className="w-12 h-12 text-amber-500" /></span>
                 <div>
                   <strong className="font-medium">Erreur:</strong> {error}
                 </div>
@@ -232,7 +233,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ isOpen, onClose, onSuccess, edi
                     {editCourse ? 'Modification...' : 'Création...'}
                   </div>
                 ) : (
-                  `${editCourse ? '💾 Modifier' : '📚 Créer'} le Cours`
+                  `${editCourse ? '<span className="inline-flex items-center justify-center"><Save className="w-4 h-4" /></span> Modifier' : '<BookOpen className="w-12 h-12 text-slate-400" /> Créer'} le Cours`
                 )}
               </button>
             </div>
