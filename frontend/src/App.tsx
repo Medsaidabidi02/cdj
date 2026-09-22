@@ -26,6 +26,9 @@ import InboxDetailPage from './pages/InboxDetailPage';
 import InboxViewerPage from './pages/InboxViewerPage';
 import ProfilePage from './pages/ProfilePage';
 import LiveSessionPage from './pages/LiveSessionPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import PricingPage from './pages/PricingPage';
 
 
 // Protected Route Component
@@ -58,27 +61,7 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   if (!user?.is_admin) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-          <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            {t('user.access_denied', 'Access Denied')}
-          </h1>
-          <p className="text-gray-600 mb-6">
-            {t('user.no_permission', 'You don\'t have permission to access this page.')}
-          </p>
-          <button 
-            onClick={() => window.location.href = '/'} 
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
-          >
-            {t('user.return_home', 'Return to Home')}
-          </button>
-        </div>
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -86,17 +69,14 @@ const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 // Guest Route Component
 const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { loading, isAuthenticated, user } = useAuth();
+  const { loading, isAuthenticated } = useAuth();
 
   if (loading) {
     return <Loading fullScreen />;
   }
 
   if (isAuthenticated) {
-    if (user?.is_admin) {
-      return <Navigate to="/admin" replace />;
-    }
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/my-learning" replace />;
   }
 
   return <>{children}</>;
@@ -108,33 +88,35 @@ function App() {
       <NotificationProvider>
         <Toaster position="bottom-left" reverseOrder={false} />
         <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/courses" element={<CoursesPage />} />
-        <Route path="/course/:id" element={<CoursePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogDetailPage />} />
-        <Route path="/blog/drafts" element={<DraftsPage />} />
-        <Route path="/contact" element={<ContactPage />} />
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/cgv" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/course/:id" element={<CoursePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogDetailPage />} />
+          <Route path="/blog/drafts" element={<DraftsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
-        {/* Guest Routes */}
-        <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
-        <Route path="/signup" element={<GuestRoute><SignupPage /></GuestRoute>} />
+          {/* Guest Routes */}
+          <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+          <Route path="/signup" element={<GuestRoute><SignupPage /></GuestRoute>} />
 
-        {/* Protected Routes */}
-        <Route path="/add-phone" element={<ProtectedRoute><PhoneVerificationPage /></ProtectedRoute>} />
-        <Route path="/my-learning" element={<ProtectedRoute><MyLearningPage /></ProtectedRoute>} />
-        <Route path="/inbox" element={<ProtectedRoute><InboxPage /></ProtectedRoute>} />
-        <Route path="/inbox/:id" element={<ProtectedRoute><InboxDetailPage /></ProtectedRoute>} />
-        <Route path="/inbox/:id/pdf" element={<ProtectedRoute><InboxViewerPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-        <Route path="/live" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
-        <Route path="/live/:sessionId" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
+          {/* Protected Routes */}
+          <Route path="/add-phone" element={<ProtectedRoute><PhoneVerificationPage /></ProtectedRoute>} />
+          <Route path="/my-learning" element={<ProtectedRoute><MyLearningPage /></ProtectedRoute>} />
+          <Route path="/inbox" element={<ProtectedRoute><InboxPage /></ProtectedRoute>} />
+          <Route path="/inbox/:id" element={<ProtectedRoute><InboxDetailPage /></ProtectedRoute>} />
+          <Route path="/inbox/:id/pdf" element={<ProtectedRoute><InboxViewerPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/live" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
+          <Route path="/live/:sessionId" element={<ProtectedRoute><LiveSessionPage /></ProtectedRoute>} />
 
-
-        {/* Admin Routes */}
-        <Route path="/admin/*" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-      </Routes>
+          {/* Admin Routes */}
+          <Route path="/admin/*" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        </Routes>
       </NotificationProvider>
     </AuthProvider>
   );
